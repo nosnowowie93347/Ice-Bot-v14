@@ -1,14 +1,54 @@
 const { token } = require('./config.json');
-const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
+const { Client, ActivityType, Events, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require("node:fs")
+const path = require("node:path")
 
-const client = new Client ({intents: GatewayIntentBits.Guilds});
+const client = new Client ({ intents: [GatewayIntentBits.Guilds] | [GatewayIntentBits.GuildMembers] | [GatewayIntentBits.MessageContent] | [GatewayIntentBits.GuildMessages]});
+
+const eventsPath = path.join(__dirname, "events")
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
+
+for(const file of eventFiles) {
+	const filePath = path.join(eventsPath, file)
+	const event = require(filePath);
+	if(event.once) {
+		client.once(event.name, (...arge) => event.execute(...args));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args));
+	}
+}
+
+
 
 client.commands = getCommands('./commands');
 
 client.once(Events.ClientReady, c => {
+	let status = [
+	{
+		name: "Stuff and things",
+		type: ActivityType.Streaming,
+		url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+	},
+	{
+		name: "Stranger Things",
+		type: ActivityType.Watching
+	},
+	{
+		name: "Fallout 4",
+		type: ActivityType.Playing
+	},
+	{
+		name: "Spotify",
+		type: ActivityType.Listening
+	}
+	]
 	console.log(`Logged in as ${c.user.tag}`);
 	console.log(client.commands)
+
+	setInterval(() => {
+		let random = Math.floor(Math.random() * status.length);
+		client.user.setActivity(status[random]);
+	}, 25000);
 });
 
 client.on(Events.InteractionCreate, (interaction) => {
