@@ -1,5 +1,5 @@
 //LETS GET STARTED
-const { get } = require("request-promise-native");
+const { fetch } = require("node-fetch");
 const { EmbedBuilder, SlashCommandBuilder, PermissionFlagsBits } = require("discord.js")
 
 module.exports = {
@@ -33,7 +33,7 @@ module.exports = {
     
     
     interaction.reply("Fetching The Info").then(msg => {
-      get(option).then(body => {
+      fetch(option).then(body => {
        try {
         let embed = new EmbedBuilder()
         .setTitle(body.data[0].attributes.slug)
