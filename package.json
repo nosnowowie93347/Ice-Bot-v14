@@ -28,5 +28,8 @@
   "bugs": {
     "url": "https://github.com/nosnowowie93347/Ice-Bot-v14/issues"
   },
-  "homepage": "https://github.com/nosnowowie93347/Ice-Bot-v14#readme"
+  "homepage": "https://github.com/nosnowowie93347/Ice-Bot-v14#readme",
+  "devDependencies": {
+    "prettier": "^3.1.1"
+  }
 }
