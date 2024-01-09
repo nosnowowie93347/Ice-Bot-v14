@@ -1,5 +1,5 @@
 const { token } = require('./config.json');
-const { Client, ActivityType, Events, GatewayIntentBits, Collection } = require('discord.js');
+const { Client, ActivityType, Events, EmbedBuilder, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require("node:fs")
 const path = require("node:path")
 
@@ -43,7 +43,6 @@ client.once(Events.ClientReady, c => {
 	}
 	]
 	console.log(`Logged in as ${c.user.tag}`);
-	console.log(client.commands)
 
 	setInterval(() => {
 		let random = Math.floor(Math.random() * status.length);
@@ -63,7 +62,24 @@ client.on(Events.InteractionCreate, (interaction) => {
 		console.error(error);
 	}
 });
+client.on(Events.Error, error => {
+  console.error(`An error has occured: ${error}`)
+});
+client.on(Events.GuildCreate, guild => {
+  // This event triggers when the bot joins a guild.
+  console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+});
 
+client.on(Events.MessageUpdate, async(oldMessage, newMessage) => {
+   
+    if(oldMessage.mentions.users.first()) {
+        const embed = new EmbedBuilder()
+        .setTitle("Ghost Ping")
+        .setDescription(`${oldMessage.author.tag} ghost pinged ${oldMessage.mentions.users.first()}`)
+        return oldMessage.channel.send(embed)
+    }
+
+})
 client.login(token);
 
 
