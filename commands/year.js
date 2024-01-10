@@ -19,8 +19,8 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor("#398748")
             .setDescription(
-                `There are **${days} days**, **${hours} hours**, **${minutes} minutes** and **${seconds} seconds** until **${next.getFullYear()}**!`
-            )
+                `There are **${days} days**, **${hours} hours**, **${minutes} minutes** and **${seconds} seconds** until **${next.getFullYear()}**!`,
+            );
         interaction.reply({ embeds: [embed] });
     },
 };

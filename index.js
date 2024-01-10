@@ -14,6 +14,7 @@ const client = new Client({
 	intents:
 		[GatewayIntentBits.Guilds] |
 		[GatewayIntentBits.GuildMembers] |
+		// [GatewayIntentBits.GuildPresence]
 		[GatewayIntentBits.MessageContent] |
 		[GatewayIntentBits.GuildMessages],
 });
@@ -117,7 +118,10 @@ function getFiles(dir) {
 
 	for (const file of files) {
 		if (file.isDirectory()) {
-			commandFiles = [...commandFiles, ...getFiles(`${dir}/${file.name}`)];
+			commandFiles = [
+				...commandFiles,
+				...getFiles(`${dir}/${file.name}`),
+			];
 		} else if (file.name.endsWith(".js")) {
 			commandFiles.push(`${dir}/${file.name}`);
 		}
