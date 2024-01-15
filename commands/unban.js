@@ -8,11 +8,7 @@ module.exports = {
       option
         .setName("userid")
         .setRequired(true)
-<<<<<<< HEAD
-        .setDescription("id of user to unban")
-=======
         .setDescription("id of user to unban"),
->>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     ),
   async execute(interaction) {
     const userId = interaction.options.getString("userid");

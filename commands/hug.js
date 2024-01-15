@@ -7,11 +7,7 @@ module.exports = {
     .setName("hug")
     .setDescription("hugs a mentioned user")
     .addUserOption((option) =>
-<<<<<<< HEAD
       option.setName("user").setRequired(true).setDescription("user to hug")
-=======
-      option.setName("user").setRequired(true).setDescription("user to hug"),
->>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     ),
 
   async execute(interaction) {
@@ -23,11 +19,7 @@ module.exports = {
       const hugembed = new EmbedBuilder()
         .setTitle(target.username + " You have been hugged!")
         .setDescription(
-<<<<<<< HEAD
           target.toString() + " got hugged by " + interaction.user
-=======
-          target.toString() + " got hugged by " + interaction.user,
->>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
         )
         .setImage(owo.url)
         .setColor(`#000000`)
