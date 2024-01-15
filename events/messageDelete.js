@@ -13,7 +13,13 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setTitle("Ghost Ping")
         .setDescription(
+<<<<<<< HEAD
           `${message.author.tag} ghost pinged ${message.mentions.users.first()}`
+=======
+          `${
+            message.author.tag
+          } ghost pinged ${message.mentions.users.first()}`,
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
         );
       return message.channel.send({ embeds: [embed] });
     }
@@ -42,10 +48,17 @@ module.exports = {
       .setTitle(
         `Message Deleted in #${
           message.channel.name
+<<<<<<< HEAD
         } by ${message.author.displayAvatarURL()}`
       );
     const logChannel = message.guild.channels.cache.find(
       (channel) => channel.name === "logs"
+=======
+        } by ${message.author.displayAvatarURL()}`,
+      );
+    const logChannel = message.guild.channels.cache.find(
+      (channel) => channel.name === "logs",
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     ); // Get this from somewhere
     if (logChannel) logChannel.send({ embeds: [embed] });
   },

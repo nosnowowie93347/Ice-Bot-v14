@@ -11,19 +11,31 @@ module.exports = {
     .setDescription("Mute anyone who break rules")
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .addUserOption((option) =>
+<<<<<<< HEAD
       option.setName("user").setRequired(true).setDescription("user to mute")
+=======
+      option.setName("user").setRequired(true).setDescription("user to mute"),
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     )
     .addStringOption((option) =>
       option
         .setName("time")
         .setRequired(true)
+<<<<<<< HEAD
         .setDescription("How long should this mute last?")
+=======
+        .setDescription("How long should this mute last?"),
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     )
     .addStringOption((option) =>
       option
         .setName("reason")
         .setRequired(true)
+<<<<<<< HEAD
         .setDescription("Why are you muting this person?")
+=======
+        .setDescription("Why are you muting this person?"),
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     ),
   async execute(interaction) {
     const member = interaction.options.getUser("user");
@@ -31,7 +43,11 @@ module.exports = {
 
     if (!user) {
       return interaction.reply(
+<<<<<<< HEAD
         "Please mention the member to who you want to mute"
+=======
+        "Please mention the member to who you want to mute",
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
       );
     }
 
@@ -52,7 +68,7 @@ module.exports = {
       .setDescription(`Successfully muted ${user}.`)
       .addFields(
         { name: "Reason", value: `${reason}`, inline: true },
-        { name: "Duration", value: `${time}`, inline: true }
+        { name: "Duration", value: `${time}`, inline: true },
       )
       .setColor(0x5fb041)
       .setTimestamp();

@@ -13,13 +13,17 @@
   "license": "ISC",
   "dependencies": {
     "canvas": "^2.11.2",
+    "common-tags": "^1.8.2",
     "discord.js": "^14.14.1",
     "imdb-api": "^4.4.1",
+    "libnpmsearch": "^7.0.1",
+    "moment-timezone": "^0.5.44",
     "ms": "^2.1.3",
     "nekos.life": "^3.0.0",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.7.0",
+    "node-superfetch": "^0.3.3",
     "os-utils": "^0.0.14",
-    "snekfetch": "^4.0.4"
+    "request-promise-native": "^1.0.9"
   },
   "repository": {
     "type": "git",
@@ -28,5 +32,8 @@
   "bugs": {
     "url": "https://github.com/nosnowowie93347/Ice-Bot-v14/issues"
   },
-  "homepage": "https://github.com/nosnowowie93347/Ice-Bot-v14#readme"
+  "homepage": "https://github.com/nosnowowie93347/Ice-Bot-v14#readme",
+  "devDependencies": {
+    "prettier": "^3.1.1"
+  }
 }

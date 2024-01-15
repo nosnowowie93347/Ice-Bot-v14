@@ -20,7 +20,11 @@ module.exports = {
     };
 
     const channel = await member.guild.channels.cache.find(
+<<<<<<< HEAD
       (channel) => channel.name === "welcome"
+=======
+      (channel) => channel.name === "welcome",
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     );
     if (!channel) return;
 
@@ -39,7 +43,11 @@ module.exports = {
     ctx.fillText(
       "Welcome to the server,",
       canvas.width / 2.5,
+<<<<<<< HEAD
       canvas.height / 3.5
+=======
+      canvas.height / 3.5,
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     );
 
     // Add an exclamation point here and below
@@ -48,7 +56,11 @@ module.exports = {
     ctx.fillText(
       `${member.displayName}!`,
       canvas.width / 2.5,
+<<<<<<< HEAD
       canvas.height / 1.8
+=======
+      canvas.height / 1.8,
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     );
 
     ctx.beginPath();
@@ -57,7 +69,11 @@ module.exports = {
     ctx.clip();
 
     const avatar = await Canvas.loadImage(
+<<<<<<< HEAD
       member.user.avatarURL({ extension: "png" })
+=======
+      member.user.avatarURL({ extension: "png" }),
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     );
     ctx.drawImage(avatar, 25, 25, 200, 200);
 
