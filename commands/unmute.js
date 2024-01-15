@@ -11,7 +11,11 @@ module.exports = {
     .setDescription("Unmute someone")
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .addUserOption((option) =>
+<<<<<<< HEAD
+      option.setName("user").setRequired(true).setDescription("user to mute")
+=======
       option.setName("user").setRequired(true).setDescription("user to mute"),
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     ),
   async execute(interaction) {
     const member = interaction.options.getUser("user");
@@ -19,7 +23,11 @@ module.exports = {
 
     if (!user) {
       return interaction.reply(
+<<<<<<< HEAD
+        "Please mention the member to who you want to unmute"
+=======
         "Please mention the member to who you want to unmute",
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
       );
     }
 

@@ -5,13 +5,21 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setDescription("Ban anyone with one shot xD")
     .addUserOption((option) =>
+<<<<<<< HEAD
+      option.setName("user").setRequired(true).setDescription("user to ban")
+=======
       option.setName("user").setRequired(true).setDescription("user to ban"),
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     )
     .addStringOption((option) =>
       option
         .setName("reason")
         .setRequired(true)
+<<<<<<< HEAD
+        .setDescription("Why are you muting this person?")
+=======
         .setDescription("Why are you muting this person?"),
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     ),
   async execute(interaction) {
     const targetUserId = interaction.options.getUser("user");

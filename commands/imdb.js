@@ -9,7 +9,11 @@ module.exports = {
       option
         .setName("name")
         .setRequired(true)
+<<<<<<< HEAD
+        .setDescription("name of movie or show")
+=======
         .setDescription("name of movie or show"),
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     ),
   async execute(interaction) {
     let nameofcontent = interaction.options.getString("name");
@@ -31,13 +35,21 @@ module.exports = {
         .addFields(
           { name: "Country", value: `${movie.country}` },
           { name: "Languages", value: `${movie.languages}` },
+<<<<<<< HEAD
+          { name: "Type", value: `${movie.type}` }
+=======
           { name: "Type", value: `${movie.type}` },
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
         );
       return interaction.reply({ embeds: [embed] });
     } catch (err) {
       console.log(err);
       return interaction.reply(
+<<<<<<< HEAD
+        `Something went wrong. Potential error message: ${err}`
+=======
         `Something went wrong. Potential error message: ${err}`,
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
       );
     }
   },

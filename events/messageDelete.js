@@ -12,11 +12,7 @@ module.exports = {
     if (message.mentions.users.first()) {
       const embed = new EmbedBuilder()
         .setTitle("Ghost Ping")
-        .setDescription(
-          `${
-            message.author.tag
-          } ghost pinged ${message.mentions.users.first()}`,
-        );
+        .setDescription(`${message.author.tag} ghost pinged ${message.mentions.users.first()}`);
       return message.channel.send({ embeds: [embed] });
     }
     if (message.partial || !message.guild || !message.content) return;
@@ -43,12 +39,10 @@ module.exports = {
       .setColor("#ffa500")
       .setTitle(
         `Message Deleted in #${
-          message.channel.name
-        } by ${message.author.displayAvatarURL()}`,
+        message.channel.name} by ${message.author.displayAvatarURL()}`
       );
     const logChannel = message.guild.channels.cache.find(
-      (channel) => channel.name === "logs",
-    ); // Get this from somewhere
+      (channel) => channel.name === "logs"); // Get this from somewhere
     if (logChannel) logChannel.send({ embeds: [embed] });
   },
 };

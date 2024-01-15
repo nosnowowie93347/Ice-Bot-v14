@@ -10,7 +10,11 @@ module.exports = {
     .setName("kick")
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .addUserOption((option) =>
+<<<<<<< HEAD
+      option.setName("user").setRequired(true).setDescription("user to kick")
+=======
       option.setName("user").setRequired(true).setDescription("user to kick"),
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
     )
     .setDescription("Kick anyone with one shot xD"),
   async execute(interaction) {
@@ -21,13 +25,21 @@ module.exports = {
 
     if (!target) {
       return await interaction.reply(
+<<<<<<< HEAD
+        `**${interaction.user.username}**, Please mention the person who you want to kick`
+=======
         `**${interaction.user.username}**, Please mention the person who you want to kick`,
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
       );
     }
 
     if (target.id === interaction.user.id) {
       return await interaction.reply(
+<<<<<<< HEAD
+        `**${interaction.user.username}**, You can not kick yourself`
+=======
         `**${interaction.user.username}**, You can not kick yourself`,
+>>>>>>> f84f62cfc7e999d2b7f74a685407d977d08b9094
       );
     }
 
