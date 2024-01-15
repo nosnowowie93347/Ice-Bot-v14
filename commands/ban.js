@@ -1,21 +1,19 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
-  .setName("ban")
-  .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
-  .setDescription("Ban anyone with one shot xD")
-  .addUserOption(option => option
-    .setName("user")
-    .setRequired(true)
-    .setDescription("user to ban")
+    .setName("ban")
+    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+    .setDescription("Ban anyone with one shot xD")
+    .addUserOption((option) =>
+      option.setName("user").setRequired(true).setDescription("user to ban")
     )
-  .addStringOption(option => option
-    .setName("reason")
-    .setRequired(true)
-    .setDescription("Why are you muting this person?")
+    .addStringOption((option) =>
+      option
+        .setName("reason")
+        .setRequired(true)
+        .setDescription("Why are you muting this person?")
     ),
   async execute(interaction) {
-
     const targetUserId = interaction.options.getUser("user");
     const reason = interaction.options.getString("reason");
     await interaction.deferReply();
@@ -54,5 +52,5 @@ module.exports = {
     } catch (error) {
       console.log(`There was an error when banning: ${error}`);
     }
-  }
-}
+  },
+};
