@@ -8,10 +8,10 @@ module.exports = {
 
       // Declare a base size of the font
       let fontSize = 70;
-
+      Canvas.registerFont('./src/fonts/ANDYB.ttf', { family: 'Andy' });
       do {
         // Assign the font to the context and decrement it so it can be measured again
-        ctx.font = `${(fontSize -= 10)}px sans-serif`;
+        ctx.font = `${(fontSize -= 10)}px Andy`;
         // Compare pixel width of the text to the canvas minus the approximate avatar size
       } while (ctx.measureText(text).width > canvas.width - 300);
 
@@ -34,7 +34,7 @@ module.exports = {
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
     // Slightly smaller text placed above the member's display name
-    ctx.font = "28px sans-serif";
+    ctx.font = "28px Andy";
     ctx.fillStyle = "#ffffff";
     ctx.fillText(
       "Welcome to the server,",
