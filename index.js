@@ -11,6 +11,7 @@ const {
 	Collection,
 } = require("discord.js");
 const fs = require("node:fs");
+const reactions = require("./models/reactionrs")
 const path = require("node:path");
 
 const client = new Client({
@@ -97,7 +98,46 @@ client.on(Events.GuildCreate, (guild) => {
 		`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`,
 	);
 });
+client.on(Events.MessageReactionAdd, async (reaction, user) => {
+	if (!reaction.message.guildId) return;
+	if (user.bot) return;
 
+	let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
+	if (!reaction.emoji.id) cID = reaction.emoji.name;
+
+	const data = await reactions.findOne({ Guild: reaction.message.guildId, Message: reaction.message.id, Emoji: cID });
+	if (!data) return;
+
+	const guild = await client.guilds.cache.get(reaction.message.guildId)
+	const member = await guild.members.cache.get(user.id)
+
+	try {
+		await member.roles.add(data.Role);
+	} catch (e) {
+		console.log(`ERROR: ${e}`)
+		return;
+	}
+});
+client.on(Events.MessageReactionRemove, async (reaction, user) => {
+	if (!reaction.message.guildId) return;
+	if (user.bot) return;
+
+	let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
+	if (!reaction.emoji.id) cID = reaction.emoji.name;
+
+	const data = await reactions.findOne({ Guild: reaction.message.guildId, Message: reaction.message.id, Emoji: cID });
+	if (!data) return;
+
+	const guild = await client.guilds.cache.get(reaction.message.guildId)
+	const member = await guild.members.cache.get(user.id)
+
+	try {
+		await member.roles.remove(data.Role);
+	} catch (e) {
+		console.log(`ERROR: ${e}`)
+		return;
+	}
+});
 client.on(Events.MessageUpdate, async (oldMessage, newMessage) => {
 	if (oldMessage.mentions.users.first()) {
 		const embed = new EmbedBuilder()

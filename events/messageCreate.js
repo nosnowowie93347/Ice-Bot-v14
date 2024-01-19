@@ -18,7 +18,7 @@ module.exports = {
   async execute(message) {
     if (message.author.bot || cooldowns.has(message.author.id)) return;
 
-    const xpToGive = getRandomXp(15, 25);
+    const xpToGive = getRandomXp(25, 35);
 
     const query = {
       userId: message.author.id,

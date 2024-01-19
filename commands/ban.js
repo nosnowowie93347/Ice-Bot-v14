@@ -11,7 +11,7 @@ module.exports = {
       option
         .setName("reason")
         .setRequired(true)
-        .setDescription("Why are you muting this person?"),
+        .setDescription("Why are you banning this person?"),
     ),
   async execute(interaction) {
     const targetUserId = interaction.options.getUser("user");
