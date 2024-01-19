@@ -11,4 +11,5 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: "got"
+      - 'dependency-name': "nekos.life"
       - dependency-name: "google-play-scraper"
