@@ -12,9 +12,9 @@ module.exports = {
 
   async execute(interaction) {
     const target = interaction.options.getUser("user");
-
+    await interaction.deferReply()
     async function work() {
-      let owo = await neko.hug();
+      let owo = await neko.sfw.hug();
 
       const hugembed = new EmbedBuilder()
         .setTitle(target.username + " You have been hugged!")
@@ -25,7 +25,7 @@ module.exports = {
         .setColor(`#000000`)
         .setURL(owo.url);
 
-      await interaction.reply({ embeds: [hugembed] });
+       interaction.editReply({ embeds: [hugembed] });
     }
 
     work();

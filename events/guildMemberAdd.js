@@ -1,71 +1,87 @@
-const Canvas = require("canvas");
-const { AttachmentBuilder, Discord } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discord.js')
+const Canvas = require('canvas')
+const welcomeSchema = require('../Models/welcome')
+
 module.exports = {
-  name: "guildMemberAdd",
-  async execute(member) {
-    const applyText = (canvas, text) => {
-      const ctx = canvas.getContext("2d");
+    name: 'guildMemberAdd',
 
-      // Declare a base size of the font
-      let fontSize = 70;
-      Canvas.registerFont('./src/fonts/ANDYB.ttf', { family: 'Andy' });
-      do {
-        // Assign the font to the context and decrement it so it can be measured again
-        ctx.font = `${(fontSize -= 10)}px Andy`;
-        // Compare pixel width of the text to the canvas minus the approximate avatar size
-      } while (ctx.measureText(text).width > canvas.width - 300);
+    async execute(member, client) {
+        const data = await welcomeSchema.findOne({
+            Guild: member.guild.id
+        })
+        if (!data) return
 
-      // Return the result to use in the actual canvas
-      return ctx.font;
-    };
+        const canvas = Canvas.createCanvas(1024, 500) // Create Canvas
+        const ctx = canvas.getContext('2d')
+        // const background = await Canvas.loadImage('D:/Ubaid7/Coding/JavaScript/Discord Bots/Tutorial Bots/Tutorial Bot V14/Images/welcome1.jpg') // Locate To Your Image
+        const background = await Canvas.loadImage('https://i.imgur.com/umLOhA3.png') // Using Link
+        ctx.drawImage(background, 0, 0, canvas.width, canvas.height) // Setting Background Image
+        ctx.strokeStyle = '#4F82F5' // Keeping Stroke Color
 
-    const channel = await member.guild.channels.cache.find(
-      (channel) => channel.name === "welcome"
-    );
-    if (!channel) return;
+        // Making A Circle Around Avatar
+        ctx.beginPath()
+        ctx.arc(512, 166, 128, 0, Math.PI * 2, true)
+        ctx.stroke()
+        ctx.fillStyle = '#4F82F5'
+        ctx.fill()
 
-    const canvas = Canvas.createCanvas(700, 250);
-    const ctx = canvas.getContext("2d");
+        // Welcome Text
+        ctx.font = '72px sans-serif' // Font For Welcome Text
+        ctx.fillStyle = '#FFFFFF' // Colour For Welcome Text
+        ctx.fillText('Welcome', 360, 360) // Display Welcome Text On Image
 
-    const background = await Canvas.loadImage("./wallpaper.png");
-    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+        // Username
+        const name = `${member.user.username}` // Username Of User
+        if (name.length >= 16) { // If Name Is Greater Than 16
+            ctx.font = '42px sans-serif' // Font For Displaying Name
+            ctx.textAlign = 'center' // Keeping The Text In Center
+            ctx.fillStyle = '#0FEEF3' //Colour Of Name
+            ctx.fillText(name, 512, 410) // Displaying Name On Image
+        } else { // If Name Is Less Than 16
+            ctx.font = '47px sans-serif' // Font For Displaying Name
+            ctx.textAlign = 'center' // Keeping The Text In Center
+            ctx.fillStyle = '#0FEEF3' //Colour Of Name
+            ctx.fillText(name, 512, 410) // Displaying Name On Image
+        }
 
-    ctx.strokeStyle = "#74037b";
-    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+        // Member Count
+        const member_count = `You Are Our #${member.guild.memberCount}th Member`
+        ctx.font = '34px sans-serif' // Font For Displaying Member Count
+        ctx.textAlign = 'center' // Keeping The Text In Center
+        ctx.fillStyle = '#21FBA1' //Colour Of Member Count
+        ctx.fillText(member_count, 512, 455) // Displaying Member Count On Image
 
-    // Slightly smaller text placed above the member's display name
-    ctx.font = "28px Andy";
-    ctx.fillStyle = "#ffffff";
-    ctx.fillText(
-      "Welcome to the server,",
-      canvas.width / 2.5,
-      canvas.height / 3.5
-    );
+        // Avatar
+        ctx.beginPath()
+        ctx.arc(512, 166, 119, 0, Math.PI * 2, true) // Avatar Of User
+        ctx.closePath()
+        ctx.clip() // Making Avatar Circle
+        const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'jpg' })) // getting Users Avatar
+        ctx.drawImage(avatar, 393, 47, 238, 238) // Adjusting Avatar In Circle
 
-    // Add an exclamation point here and below
-    ctx.font = applyText(canvas, `${member.displayName}!`);
-    ctx.fillStyle = "#ffffff";
-    ctx.fillText(
-      `${member.displayName}!`,
-      canvas.width / 2.5,
-      canvas.height / 1.8
-    );
+        const attachment = new AttachmentBuilder(await canvas.toBuffer(), {
+            name: 'welcome.png'
+        }) // Sending Image As Attachment
 
-    ctx.beginPath();
-    ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
-    ctx.closePath();
-    ctx.clip();
+        const channel = member.guild.channels.cache.get(data.Channel)
+        if (!channel) return
+        let message = data.Message
+        if (!message || message === null) message = `Welcome To ${member.guild.name}`
+        let rule = data.Rule
+        if (!rule || rule === null) rule = `#NotSetYet`
 
-    const avatar = await Canvas.loadImage(member.user.avatarURL({ extension: "png" }));
-    ctx.drawImage(avatar, 25, 25, 200, 200);
-
-    const attachment = new AttachmentBuilder(canvas.toBuffer(), {
-      name: "welcome-image.png",
-    });
-
-    channel.send({
-      content: `Welcome to the server, ${member}!`,
-      files: [attachment],
-    });
-  },
-};
+        const welcomeEmbed = new EmbedBuilder()
+            .setColor('Random')
+            .setTimestamp()
+            .setAuthor({
+                name: `Welcome To ${member.guild.name}`,
+                iconURL: member.guild.iconURL()
+            })
+            .setImage('attachment://welcome.png')
+            .setDescription(`
+        Welcome To **${member.guild.name}** <@${member.id}>
+        Make Sure To Check <#${rule}>
+                `)
+        await channel.send({ content: `<@${member.id}>\n${message}`, embeds: [welcomeEmbed], files: [attachment] }) // Send Embed, Image And Mess
+      }
+    }

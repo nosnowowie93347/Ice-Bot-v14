@@ -12,9 +12,9 @@ module.exports = {
 
   async execute(interaction) {
     const target = interaction.options.getUser("user");
-
+    await interaction.deferReply()
     async function work() {
-      let owo = await neko.kiss();
+      let owo = await neko.sfw.kiss();
 
       const kissembed = new EmbedBuilder()
         .setTitle(target.username + " You have been kissed!")
@@ -25,7 +25,7 @@ module.exports = {
         .setColor(`#000000`)
         .setURL(owo.url);
 
-      await interaction.reply({ embeds: [kissembed] });
+       interaction.editReply({ embeds: [kissembed] });
     }
 
     work();

@@ -1,4 +1,5 @@
-const { token } = require("./config.json");
+const { token, MONGODB_URI } = require("./config.json");
+const mongoose = require("mongoose");
 const {
 	Client,
 	ActivityType,
@@ -14,7 +15,8 @@ const client = new Client({
 	intents:
 		[GatewayIntentBits.Guilds] |
 		[GatewayIntentBits.GuildMembers] |
-		// [GatewayIntentBits.GuildPresence]
+		[GatewayIntentBits.GuildEmojisAndStickers] |
+		[GatewayIntentBits.GuildMessageReactions] |
 		[GatewayIntentBits.MessageContent] |
 		[GatewayIntentBits.GuildMessages],
 });
@@ -37,6 +39,9 @@ for (const file of eventFiles) {
 client.commands = getCommands("./commands");
 
 client.once(Events.ClientReady, (c) => {
+	mongoose.set("strictQuery", false);
+	mongoose.connect(MONGODB_URI);
+	console.log("Connected to DB.");
 	let status = [
 		{
 			name: "Stuff and things",
@@ -67,6 +72,7 @@ client.once(Events.ClientReady, (c) => {
 client.on(Events.InteractionCreate, (interaction) => {
 	if (!interaction.isChatInputCommand()) return;
 
+
 	let command = client.commands.get(interaction.commandName);
 
 	try {
@@ -76,6 +82,8 @@ client.on(Events.InteractionCreate, (interaction) => {
 		console.error(error);
 	}
 });
+
+
 client.on(Events.Error, (error) => {
 	console.error(`An error has occured: ${error}`);
 });
@@ -99,17 +107,6 @@ client.on(Events.MessageUpdate, async (oldMessage, newMessage) => {
 	}
 });
 client.login(token);
-
-function getCommands(dir) {
-	let commands = new Collection();
-	const commandFiles = getFiles(dir);
-	for (const commandFile of commandFiles) {
-		const command = require(commandFile);
-		commands.set(command.data.toJSON().name, command);
-	}
-	return commands;
-}
-
 function getFiles(dir) {
 	const files = fs.readdirSync(dir, {
 		withFileTypes: true,
@@ -127,4 +124,14 @@ function getFiles(dir) {
 		}
 	}
 	return commandFiles;
+}
+
+function getCommands(dir) {
+	let commands = new Collection();
+	const commandFiles = getFiles(dir);
+	for (const commandFile of commandFiles) {
+		const command = require(commandFile);
+		commands.set(command.data.toJSON().name, command);
+	}
+	return commands;
 }

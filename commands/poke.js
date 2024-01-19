@@ -4,28 +4,28 @@ const neko = new client();
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("slap")
-    .setDescription("Give someone a nice slap!")
+    .setName("poke")
+    .setDescription("poke a mentioned user")
     .addUserOption((option) =>
-      option.setName("user").setRequired(true).setDescription("user to slap"),
+      option.setName("user").setRequired(true).setDescription("user to poke")
     ),
 
   async execute(interaction) {
     const target = interaction.options.getUser("user");
-
+    await interaction.deferReply()
     async function work() {
-      let owo = await neko.slap();
+      let owo = await neko.sfw.poke();
 
-      const slapembed = new EmbedBuilder()
-        .setTitle(target.username + " OUCH! You've been slapped!")
+      const pokeembed = new EmbedBuilder()
+        .setTitle(target.username + " You have been poked!")
         .setDescription(
-          target.toString() + " got slapped by " + interaction.user.username,
+          target.toString() + " got poked by " + interaction.user
         )
         .setImage(owo.url)
         .setColor(`#000000`)
         .setURL(owo.url);
 
-      await interaction.reply({ embeds: [slapembed] });
+      interaction.editReply({ embeds: [pokeembed] });
     }
 
     work();
