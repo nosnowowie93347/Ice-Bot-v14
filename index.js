@@ -1,9 +1,11 @@
 const { token, MONGODB_URI } = require("./config.json");
+const process = require("node:process");
 const mongoose = require("mongoose");
 const {
 	Client,
 	ActivityType,
 	Events,
+	PermissionsBitField,
 	EmbedBuilder,
 	GatewayIntentBits,
 	Collection,
@@ -69,9 +71,12 @@ client.once(Events.ClientReady, (c) => {
 	}, 25000);
 });
 
+process.on("uncaughtException", (err) => {
+	console.log("Uncaught exception: ", err);
+});
+
 client.on(Events.InteractionCreate, (interaction) => {
 	if (!interaction.isChatInputCommand()) return;
-
 
 	let command = client.commands.get(interaction.commandName);
 
@@ -82,7 +87,6 @@ client.on(Events.InteractionCreate, (interaction) => {
 		console.error(error);
 	}
 });
-
 
 client.on(Events.Error, (error) => {
 	console.error(`An error has occured: ${error}`);

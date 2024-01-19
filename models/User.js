@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema({
   userId: {
@@ -31,6 +31,7 @@ const userSchema = new Schema({
   },
   bank: {
     type: Number,
+    default: 0,
   },
   rob: {
     type: Boolean,
@@ -38,7 +39,7 @@ const userSchema = new Schema({
   },
   rob_cooldown: {
     type: Number,
-    default: 0
+    default: 0,
   },
   rob_cooldown_time: {
     type: Number,
@@ -57,4 +58,4 @@ const userSchema = new Schema({
   },
 });
 
-module.exports = model('User', userSchema);
+module.exports = model("User", userSchema);
