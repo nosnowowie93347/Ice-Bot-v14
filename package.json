@@ -16,7 +16,7 @@
     "canvacord": "^6.0.1",
     "canvas": "^2.11.2",
     "common-tags": "^1.8.2",
-    "delay": "^4.4.0",
+    "delay": "^6.0.0",
     "discord-gamecord": "^4.4.1",
     "discord.js": "^14.14.1",
     "discord.js-akinator": "^4.1.3",
