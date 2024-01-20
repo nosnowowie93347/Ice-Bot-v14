@@ -5,6 +5,9 @@ const {
 	Client,
 	ActivityType,
 	Events,
+	DMChannel,
+	ChannelType,
+	Partials,
 	PermissionsBitField,
 	EmbedBuilder,
 	GatewayIntentBits,
@@ -13,15 +16,17 @@ const {
 const fs = require("node:fs");
 const reactions = require("./models/reactionrs")
 const path = require("node:path");
-
+const axios = require('axios')
 const client = new Client({
 	intents:
 		[GatewayIntentBits.Guilds] |
+		[GatewayIntentBits.DirectMessages] |
 		[GatewayIntentBits.GuildMembers] |
 		[GatewayIntentBits.GuildEmojisAndStickers] |
 		[GatewayIntentBits.GuildMessageReactions] |
 		[GatewayIntentBits.MessageContent] |
 		[GatewayIntentBits.GuildMessages],
+	partials: [Partials.Message, Partials.Channel, Partials.Reaction ]
 });
 
 const eventsPath = path.join(__dirname, "events");

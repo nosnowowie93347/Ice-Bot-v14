@@ -1,4 +1,4 @@
-const { Client, Message, EmbedBuilder } = require("discord.js");
+const { Client, Message, EmbedBuilder, ChannelType } = require("discord.js");
 const calculateLevelXp = require("../utils/calculateLevelXP");
 const Level = require("../models/Level");
 const cooldowns = new Set();
@@ -16,7 +16,7 @@ function getRandomXp(min, max) {
 module.exports = {
   name: "messageCreate",
   async execute(message) {
-    if (message.author.bot || cooldowns.has(message.author.id)) return;
+    if (message.author.bot || message.channel.type == ChannelType.DM || cooldowns.has(message.author.id)) return;
 
     const xpToGive = getRandomXp(25, 35);
 

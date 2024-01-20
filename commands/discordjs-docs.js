@@ -1,17 +1,27 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require('discord.js')
-const puppeteer = require('puppeteer')
+const {
+	SlashCommandBuilder,
+	EmbedBuilder,
+	ActionRowBuilder,
+	ButtonStyle,
+	ButtonBuilder,
+} = require("discord.js");
+const puppeteer = require("puppeteer");
 
 module.exports = {
 	data: new SlashCommandBuilder()
-	.setName('discordjs-docs')
-	.setDescription('Searches the discord.js docs')
-	.addStringOption(option => option.setName('query').setDescription('The thing to search for').setRequired(true)),
+		.setName("discordjs-docs")
+		.setDescription("Searches the discord.js docs")
+		.addStringOption((option) =>
+			option
+				.setName("query")
+				.setDescription("The thing to search for")
+				.setRequired(true),
+		),
 	async execute(interaction) {
-
-		var query = interaction.options.getString('query')
+		var query = interaction.options.getString("query");
 		await interaction.deferReply({ ephemeral: true });
 
-		query = query.replace(' ', '%')
+		query = query.replace(" ", "%");
 
 		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
@@ -22,75 +32,90 @@ module.exports = {
 		var wait;
 		setTimeout(async () => {
 			if (wait !== true) {
-				await browser.close()
-				return await interaction.editReply({ content: `⚠️ I am having a hard time processing this request` })
+				await browser.close();
+				return await interaction.editReply({
+					content: `⚠️ I am having a hard time processing this request`,
+				});
 			}
 		}, 30000);
 
-		await page.waitForSelector('div > ul.no-list').catch(err => {});
+		await page.waitForSelector("div > ul.no-list").catch((err) => {});
 		wait = true;
 
 		const values = await page.evaluate(() => {
-			const div = document.querySelector('div > ul.no-list');
-			const listItems = div.querySelectorAll('li');
+			const div = document.querySelector("div > ul.no-list");
+			const listItems = div.querySelectorAll("li");
 
 			const valuesArray = [];
 			listItems.forEach((li) => {
 				const text = li.innerText;
-				const link = `https://old.discordjs.dev/${li.querySelector('a').getAttribute('href')}`;
+				const link = `https://old.discordjs.dev/${li.querySelector("a").getAttribute("href")}`;
 				valuesArray.push({ text, link });
 			});
 
 			return valuesArray;
 		});
 
-		await browser.close()
+		await browser.close();
 
-		if (values <= 1) return await interaction.editReply(`No docs found for query \`${query}\``);
+		if (values <= 1)
+			return await interaction.editReply(
+				`No docs found for query \`${query}\``,
+			);
 
-		async function getValues (num) {
-			const output = values.slice(0, num)
-			const format = output.map(item => `[${item.text.replace(`\n`, '').substring(1)}](${item.link})\n`);
+		async function getValues(num) {
+			const output = values.slice(0, num);
+			const format = output.map(
+				(item) =>
+					`[${item.text.replace(`\n`, "").substring(1)}](${item.link})\n`,
+			);
 			return format;
 		}
 
-		const button = new ActionRowBuilder()
-		.addComponents(
+		const button = new ActionRowBuilder().addComponents(
 			new ButtonBuilder()
-			.setLabel('Load More')
-			.setStyle(ButtonStyle.Primary)
-			.setCustomId('djsload'),
+				.setLabel("Load More")
+				.setStyle(ButtonStyle.Primary)
+				.setCustomId("djsload"),
 
 			new ButtonBuilder()
-			.setLabel("Full List")
-			.setStyle(ButtonStyle.Link)
-			.setURL(openURL)
+				.setLabel("Full List")
+				.setStyle(ButtonStyle.Link)
+				.setURL(openURL),
 		);
 
-		query = query.replace('%', ' ')
+		query = query.replace("%", " ");
 		const finalOutput = await getValues(10);
 		const embed = new EmbedBuilder()
-		.setColor("Blurple")
-		.setTitle(`Discord.js Documentation Query: ${query}`)
-		.setDescription(finalOutput.join(""))
-		.setFooter({ text: `Loaded 10 values` });
+			.setColor("Blurple")
+			.setTitle(`Discord.js Documentation Query: ${query}`)
+			.setDescription(finalOutput.join(""))
+			.setFooter({ text: `Loaded 10 values` });
 
-		const msg = await interaction.editReply({ embeds: [embed], components: [button] });
+		const msg = await interaction.editReply({
+			embeds: [embed],
+			components: [button],
+		});
 		const collector = await msg.createMessageComponentCollector();
 
 		var num = 20;
-		collector.on('collect', async i => {
-			if (i.customId == 'djsload') {
-				if (num == 40) return await interaction.editReply("I can't load more values.");
+		collector.on("collect", async (i) => {
+			if (i.customId == "djsload") {
+				if (num == 40)
+					return await interaction.editReply(
+						"I can't load more values.",
+					);
 				const newOutput = await getValues(num);
-				embed.setDescription(newOutput.join(""))
-				embed.setFooter({ text: `Loaded ${num} values` })
-				await interaction.editReply({ embeds: [embed] , components: [button] });
-				await i.reply({ content: "Loaded 10 more values!" })
+				embed.setDescription(newOutput.join(""));
+				embed.setFooter({ text: `Loaded ${num} values` });
+				await interaction.editReply({
+					embeds: [embed],
+					components: [button],
+				});
+				await i.reply({ content: "Loaded 10 more values!" });
 
 				num += 10;
 			}
 		});
-
-	}
-}
+	},
+};
