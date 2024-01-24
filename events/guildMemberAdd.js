@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discord.js')
 const Canvas = require('canvas')
-const welcomeSchema = require('../Models/welcome')
+const welcomeSchema = require('../models/welcome')
 
 module.exports = {
     name: 'guildMemberAdd',

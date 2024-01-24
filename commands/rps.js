@@ -9,7 +9,7 @@ module.exports = {
 			option
 				.setName("user")
 				.setRequired(true)
-				.setDescription("Your opponent")
+				.setDescription("Your opponent"),
 		),
 	async execute(interaction) {
 		const Game = new RockPaperScissors({

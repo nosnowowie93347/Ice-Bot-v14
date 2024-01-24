@@ -16,9 +16,14 @@ function getRandomXp(min, max) {
 module.exports = {
   name: "messageCreate",
   async execute(message) {
-    if (message.author.bot || message.channel.type == ChannelType.DM || cooldowns.has(message.author.id)) return;
+    if (
+      message.author.bot ||
+      message.channel.type == ChannelType.DM ||
+      cooldowns.has(message.author.id)
+    )
+      return;
 
-    const xpToGive = getRandomXp(25, 35);
+    const xpToGive = getRandomXp(125, 135);
 
     const query = {
       userId: message.author.id,
@@ -46,7 +51,7 @@ module.exports = {
         cooldowns.add(message.author.id);
         setTimeout(() => {
           cooldowns.delete(message.author.id);
-        }, 60000);
+        }, 30000);
       }
 
       // if (!level)
@@ -62,7 +67,7 @@ module.exports = {
         cooldowns.add(message.author.id);
         setTimeout(() => {
           cooldowns.delete(message.author.id);
-        }, 60000);
+        }, 30000);
         console.log("I think this works now!");
       }
     } catch (error) {

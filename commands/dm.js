@@ -1,9 +1,10 @@
 const Discord = module.require("discord.js");
-const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
+const { EmbedBuilder, SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
   .setName("dm")
+  .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
   .setDescription("Sends a dm to anyone")
   .addUserOption((option) =>
       option.setName("user").setRequired(true).setDescription("user to dm")

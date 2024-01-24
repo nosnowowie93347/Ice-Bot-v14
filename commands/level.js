@@ -54,7 +54,7 @@ module.exports = {
 
     let currentRank =
       allLevels.findIndex((lvl) => lvl.userId === targetUserId) + 1;
-    
+
     const rank = new RankCardBuilder()
       .setAvatar(targetUserObj.user.displayAvatarURL({ size: 256 }))
       .setRank(currentRank)
@@ -62,9 +62,9 @@ module.exports = {
       .setCurrentXP(fetchedLevel.xp)
       .setRequiredXP(calculateLevelXp(fetchedLevel.level))
       .setProgressCalculator(() => {
-       Math.floor(Math.random() * 100)
+        Math.floor(Math.random() * 100);
       })
-      .setUsername(targetUserObj.user.username)
+      .setUsername(targetUserObj.user.username);
     Font.loadDefault();
     const data = await rank.build();
     const attachment = new AttachmentBuilder(data);
