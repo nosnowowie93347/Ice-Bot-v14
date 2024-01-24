@@ -14,9 +14,9 @@ const {
 	Collection,
 } = require("discord.js");
 const fs = require("node:fs");
-const reactions = require("./models/reactionrs")
+const reactions = require("./models/reactionrs");
 const path = require("node:path");
-const axios = require('axios')
+const axios = require("axios");
 const client = new Client({
 	intents:
 		[GatewayIntentBits.Guilds] |
@@ -26,7 +26,7 @@ const client = new Client({
 		[GatewayIntentBits.GuildMessageReactions] |
 		[GatewayIntentBits.MessageContent] |
 		[GatewayIntentBits.GuildMessages],
-	partials: [Partials.Message, Partials.Channel, Partials.Reaction ]
+	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 
 const eventsPath = path.join(__dirname, "events");
@@ -110,16 +110,20 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 	let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
 	if (!reaction.emoji.id) cID = reaction.emoji.name;
 
-	const data = await reactions.findOne({ Guild: reaction.message.guildId, Message: reaction.message.id, Emoji: cID });
+	const data = await reactions.findOne({
+		Guild: reaction.message.guildId,
+		Message: reaction.message.id,
+		Emoji: cID,
+	});
 	if (!data) return;
 
-	const guild = await client.guilds.cache.get(reaction.message.guildId)
-	const member = await guild.members.cache.get(user.id)
+	const guild = await client.guilds.cache.get(reaction.message.guildId);
+	const member = await guild.members.cache.get(user.id);
 
 	try {
 		await member.roles.add(data.Role);
 	} catch (e) {
-		console.log(`ERROR: ${e}`)
+		console.log(`ERROR: ${e}`);
 		return;
 	}
 });
@@ -130,16 +134,20 @@ client.on(Events.MessageReactionRemove, async (reaction, user) => {
 	let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
 	if (!reaction.emoji.id) cID = reaction.emoji.name;
 
-	const data = await reactions.findOne({ Guild: reaction.message.guildId, Message: reaction.message.id, Emoji: cID });
+	const data = await reactions.findOne({
+		Guild: reaction.message.guildId,
+		Message: reaction.message.id,
+		Emoji: cID,
+	});
 	if (!data) return;
 
-	const guild = await client.guilds.cache.get(reaction.message.guildId)
-	const member = await guild.members.cache.get(user.id)
+	const guild = await client.guilds.cache.get(reaction.message.guildId);
+	const member = await guild.members.cache.get(user.id);
 
 	try {
 		await member.roles.remove(data.Role);
 	} catch (e) {
-		console.log(`ERROR: ${e}`)
+		console.log(`ERROR: ${e}`);
 		return;
 	}
 });

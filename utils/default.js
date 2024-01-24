@@ -1,24 +1,10 @@
 /// Default Configrations!
 
 module.exports = {
-    auction: {
-        role_list: [ // List role name your can sell!
-            "Common",
-            "Uncommon",
-            "Rare",
-            "Epic",
-            "Legendary",
-            "Mythic",
-            "Space"
-        ],
-        auction_tax: 0.05, // 0.05 = 5% // 0.1 = 10%
-        max_auction: 5, // max auction
-        auction_start: 10000, // need 10,000 to create auction!
-        auction_alert: "958231078764687390", // channel id to send alert
-    },
-    dark_auction: { /// This command can run buy admin only!
+    dark_auction: {
+        /// This command can run buy admin only!
         multiple: 2, // x2 when bid multiple of times
-        time_remaining: 120, // time remaining to bid 
+        time_remaining: 120, // time remaining to bid
     },
     general: {
         start_money: 5000,
@@ -72,8 +58,8 @@ module.exports = {
         max_rob_cooldown_time: 999, // Max reduce rob cooldown time!
     },
     exchange: {
-        three_to_four: 10, // Example need 10 | 3 star exchange to 1 | 4 star 
-        four_to_five: 10, 
-        five_to_six: 10, 
-    }
-}
+        three_to_four: 10, // Example need 10 | 3 star exchange to 1 | 4 star
+        four_to_five: 10,
+        five_to_six: 10,
+    },
+};

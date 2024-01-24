@@ -1,4 +1,4 @@
-const mongo = require('mongoose')
+const mongo = require("mongoose");
 
 const welcomeSchema = new mongo.Schema({
     Guild: String,
@@ -6,6 +6,6 @@ const welcomeSchema = new mongo.Schema({
     Message: String,
     Role: String,
     Rule: String,
-})
+});
 
-module.exports = mongo.model('Welcome', welcomeSchema)
+module.exports = mongo.model("Welcome", welcomeSchema);

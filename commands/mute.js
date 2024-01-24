@@ -11,18 +11,19 @@ module.exports = {
     .setDescription("Mute anyone who break rules")
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .addUserOption((option) =>
-      option.setName("user").setRequired(true).setDescription("user to mute")
+      option.setName("user").setRequired(true).setDescription("user to mute"),
     )
     .addStringOption((option) =>
       option
         .setName("time")
         .setRequired(true)
-        .setDescription("daihkgisjgipdhigd")    )
+        .setDescription("daihkgisjgipdhigd"),
+    )
     .addStringOption((option) =>
       option
         .setName("reason")
         .setDescription("dhragoiehogihw")
-        .setRequired(true)
+        .setRequired(true),
     ),
   async execute(interaction) {
     const member = interaction.options.getUser("user");
@@ -30,7 +31,7 @@ module.exports = {
 
     if (!user) {
       return interaction.reply(
-        "Please mention the member to who you want to mute"
+        "Please mention the member to who you want to mute",
       );
     }
 

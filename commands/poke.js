@@ -7,20 +7,18 @@ module.exports = {
     .setName("poke")
     .setDescription("poke a mentioned user")
     .addUserOption((option) =>
-      option.setName("user").setRequired(true).setDescription("user to poke")
+      option.setName("user").setRequired(true).setDescription("user to poke"),
     ),
 
   async execute(interaction) {
     const target = interaction.options.getUser("user");
-    await interaction.deferReply()
+    await interaction.deferReply();
     async function work() {
       let owo = await neko.sfw.poke();
 
       const pokeembed = new EmbedBuilder()
         .setTitle(target.username + " You have been poked!")
-        .setDescription(
-          target.toString() + " got poked by " + interaction.user
-        )
+        .setDescription(target.toString() + " got poked by " + interaction.user)
         .setImage(owo.url)
         .setColor(`#000000`)
         .setURL(owo.url);

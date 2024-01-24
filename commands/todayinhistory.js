@@ -47,7 +47,8 @@ module.exports = {
 					name: "❯ See More",
 					value: event.links
 						.map(
-							(link) => `[${link.title}](${link.link.replace(/\)/g, "%29")})`,
+							(link) =>
+								`[${link.title}](${link.link.replace(/\)/g, "%29")})`,
 						)
 						.join(", "),
 				});

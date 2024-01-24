@@ -11,9 +11,9 @@ module.exports = {
         .setName("shop")
         .setDescription("Shop with your money")
         .addSubcommand((subcommand) =>
-            subcommand.setName("list").setDescription("list items in shop")
+            subcommand.setName("list").setDescription("list items in shop"),
         )
-        
+
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("buy")
@@ -22,8 +22,8 @@ module.exports = {
                     option
                         .setName("item")
                         .setDescription("Item you wanna buy")
-                        .setRequired(true)
-                )
+                        .setRequired(true),
+                ),
         ),
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: false });
