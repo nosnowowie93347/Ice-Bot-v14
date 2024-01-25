@@ -13,6 +13,8 @@ config.json
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 .config.json
 # Runtime data
+.puppeteerrc.cjs
+*.puppeteerrc.cjs
 pids
 *.pid
 *.seed
