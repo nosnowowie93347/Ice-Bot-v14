@@ -1,0 +1,7 @@
+{
+    "token": "Your bot token",
+    "guildId": "Your main guild id",
+    "MONGODB_URI": "mongodb connection string",
+    "clientId": "bot user id",
+    "tenorkey": "tenor api key"
+}

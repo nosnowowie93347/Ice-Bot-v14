@@ -1,4 +1,5 @@
 const { token, MONGODB_URI } = require("./config.json");
+const cowsay = require("cowsay");
 const process = require("node:process");
 const mongoose = require("mongoose");
 const {
@@ -50,7 +51,13 @@ client.commands = getCommands("./commands");
 client.once(Events.ClientReady, (c) => {
 	mongoose.set("strictQuery", false);
 	mongoose.connect(MONGODB_URI);
-	console.log("Connected to DB.");
+	console.log(
+		cowsay.say({
+			text: "Connected to Database",
+			e: "oO",
+			T: "U ",
+		}),
+	);
 	let status = [
 		{
 			name: "Stuff and things",
@@ -70,7 +77,12 @@ client.once(Events.ClientReady, (c) => {
 			type: ActivityType.Listening,
 		},
 	];
-	console.log(`Logged in as ${c.user.tag}`);
+	console.log(
+		cowsay.say({
+			text: `Logged in as ${c.user.tag}`,
+			f: "dragon-and-cow",
+		}),
+	);
 
 	setInterval(() => {
 		let random = Math.floor(Math.random() * status.length);
