@@ -23,8 +23,8 @@ module.exports = {
     )
       return;
 
-    const xpToGive = getRandomXp(125, 135);
-
+    const xpToGive = getRandomXp(50, 70);
+    console.log(xpToGive);
     const query = {
       userId: message.author.id,
       guildId: message.guild.id,

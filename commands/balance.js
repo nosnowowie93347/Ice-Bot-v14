@@ -38,7 +38,7 @@ module.exports = {
             .setColor("Random")
             .setAuthor({ name: userTag, iconURL: avatarURL })
             .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
-            .setDescription(`Here are the stats for ${user}`)
+            .setDescription(`Here are the stats for <@${mention}>`)
             .addFields({
                 name: "Coin:",
                 value: `\`$${numberWithCommas(user.balance)}\``,

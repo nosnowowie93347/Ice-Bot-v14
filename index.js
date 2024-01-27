@@ -23,6 +23,7 @@ const client = new Client({
 		[GatewayIntentBits.DirectMessages] |
 		[GatewayIntentBits.GuildMembers] |
 		[GatewayIntentBits.GuildEmojisAndStickers] |
+		[GatewayIntentBits.GuildPresences] |
 		[GatewayIntentBits.GuildMessageReactions] |
 		[GatewayIntentBits.MessageContent] |
 		[GatewayIntentBits.GuildMessages],

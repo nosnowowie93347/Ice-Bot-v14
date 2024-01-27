@@ -6,7 +6,7 @@ const {
   AttachmentBuilder,
 } = require("discord.js");
 const { RankCardBuilder, Font } = require("canvacord");
-const calculateLevelXp = require("../utils/calculateLevelXp");
+const calculateLevelXp = require("../utils/calculateLevelXP");
 const Level = require("../models/Level");
 
 module.exports = {
@@ -22,12 +22,14 @@ module.exports = {
   async execute(interaction) {
     await interaction.deferReply();
 
-    const mentionedUserId = interaction.options.getUser("target-user").value;
-    const targetUserId = mentionedUserId || interaction.member.id;
+    const mentionedUserId = interaction.options.getUser("target-user");
+
+    const targetUserId = mentionedUserId;
     const targetUserObj = await interaction.guild.members.fetch(targetUserId);
+    const targetUser = targetUserObj.id
 
     const fetchedLevel = await Level.findOne({
-      userId: targetUserId,
+      userId: targetUser,
       guildId: interaction.guild.id,
     });
 
@@ -53,7 +55,7 @@ module.exports = {
     });
 
     let currentRank =
-      allLevels.findIndex((lvl) => lvl.userId === targetUserId) + 1;
+      allLevels.findIndex((lvl) => lvl.userId === targetUser) + 1;
 
     const rank = new RankCardBuilder()
       .setAvatar(targetUserObj.user.displayAvatarURL({ size: 256 }))
