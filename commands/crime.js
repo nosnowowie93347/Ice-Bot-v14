@@ -20,7 +20,7 @@ module.exports = {
 
     if (user.crime_cooldown > Date.now()) {
       return interaction.editReply(
-        `You can't crime yet, you have to wait \`${time_format}\``
+        `You can't crime yet, you have to wait \`${time_format}\``,
       );
     }
 
@@ -28,7 +28,7 @@ module.exports = {
     const amount =
       Math.floor(
         Math.random() *
-          (config.general.crime_money_min - config.general.crime_money_max)
+          (config.general.crime_money_min - config.general.crime_money_max),
       ) + config.general.crime_money_max;
     /// + New Cooldown
     user.crime_cooldown = Date.now() + user.crime_cooldown_time * 1000;
@@ -48,7 +48,7 @@ module.exports = {
               }),
             })
             .setDescription(
-              `${interaction.user} *has earned* \`$${numberWithCommas(amount)}\` *from crime*`
+              `${interaction.user} *has earned* \`$${numberWithCommas(amount)}\` *from crime*`,
             )
             .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
             .setFooter({
@@ -72,7 +72,7 @@ module.exports = {
               }),
             })
             .setDescription(
-              `${interaction.user} *has earned* \`$${numberWithCommas(amount)}\` *from crime*`
+              `${interaction.user} *has earned* \`$${numberWithCommas(amount)}\` *from crime*`,
             )
             .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
             .setFooter({
@@ -96,7 +96,7 @@ module.exports = {
               }),
             })
             .setDescription(
-              `${interaction.user} *has been caught* *and lost* \`$${numberWithCommas(amount)}\` *from crime*`
+              `${interaction.user} *has been caught* *and lost* \`$${numberWithCommas(amount)}\` *from crime*`,
             )
             .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
             .setFooter({
@@ -120,7 +120,7 @@ module.exports = {
               }),
             })
             .setDescription(
-              `${interaction.user} *has been caught* *and lost* \`$${numberWithCommas(formatBoost)}\` *from crime*`
+              `${interaction.user} *has been caught* *and lost* \`$${numberWithCommas(formatBoost)}\` *from crime*`,
             )
             .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
             .setFooter({

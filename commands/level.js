@@ -26,7 +26,7 @@ module.exports = {
 
     const targetUserId = mentionedUserId;
     const targetUserObj = await interaction.guild.members.fetch(targetUserId);
-    const targetUser = targetUserObj.id
+    const targetUser = targetUserObj.id;
 
     const fetchedLevel = await Level.findOne({
       userId: targetUser,

@@ -10,7 +10,7 @@ module.exports = {
     .setName("kick")
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .addUserOption((option) =>
-      option.setName("user").setRequired(true).setDescription("user to kick")
+      option.setName("user").setRequired(true).setDescription("user to kick"),
     )
     .setDescription("Kick anyone with one shot xD"),
   async execute(interaction) {
@@ -21,13 +21,13 @@ module.exports = {
 
     if (!target) {
       return await interaction.reply(
-        `**${interaction.user.username}**, Please mention the person who you want to kick`
+        `**${interaction.user.username}**, Please mention the person who you want to kick`,
       );
     }
 
     if (target.id === interaction.user.id) {
       return await interaction.reply(
-        `**${interaction.user.username}**, You can not kick yourself`
+        `**${interaction.user.username}**, You can not kick yourself`,
       );
     }
 

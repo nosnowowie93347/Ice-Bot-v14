@@ -4,6 +4,7 @@ const PlayStore = require("google-play-scraper");
 //By Legendary Emoji | :D
 
 module.exports = {
+  cooldown: 10,
   data: new SlashCommandBuilder()
     .setName("playstore")
     .setDescription(

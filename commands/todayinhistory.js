@@ -2,6 +2,7 @@ const request = require("node-superfetch");
 const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
+	cooldown: 15,
 	data: new SlashCommandBuilder()
 		.setName("today-in-history")
 		.setDescription("today in history")

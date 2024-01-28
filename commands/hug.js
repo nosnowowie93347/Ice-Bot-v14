@@ -7,25 +7,25 @@ module.exports = {
     .setName("hug")
     .setDescription("hugs a mentioned user")
     .addUserOption((option) =>
-      option.setName("user").setRequired(true).setDescription("user to hug")
+      option.setName("user").setRequired(true).setDescription("user to hug"),
     ),
 
   async execute(interaction) {
     const target = interaction.options.getUser("user");
-    await interaction.deferReply()
+    await interaction.deferReply();
     async function work() {
       let owo = await neko.sfw.hug();
 
       const hugembed = new EmbedBuilder()
         .setTitle(target.username + " You have been hugged!")
         .setDescription(
-          target.toString() + " got hugged by " + interaction.user
+          target.toString() + " got hugged by " + interaction.user,
         )
         .setImage(owo.url)
         .setColor(`#000000`)
         .setURL(owo.url);
 
-       interaction.editReply({ embeds: [hugembed] });
+      interaction.editReply({ embeds: [hugembed] });
     }
 
     work();

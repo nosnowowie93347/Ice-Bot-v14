@@ -25,11 +25,11 @@ module.exports = {
           intResponse = 1;
           var total = interaction.guild.emojis.cache.size;
           var animated = interaction.guild.emojis.cache.filter(
-            (emoji) => emoji.animated
+            (emoji) => emoji.animated,
           ).size;
           embed
             .setTitle(
-              `${total - animated} Regular, ${animated} Animated, ${total} Total`
+              `${total - animated} Regular, ${animated} Animated, ${total} Total`,
             )
             .setDescription(emoji.join(" "));
 

@@ -8,6 +8,7 @@ const {
 const puppeteer = require("puppeteer");
 
 module.exports = {
+	cooldown: 20,
 	data: new SlashCommandBuilder()
 		.setName("discordjs-docs")
 		.setDescription("Searches the discord.js docs")
