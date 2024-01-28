@@ -2,6 +2,7 @@ const User = require("../models/User");
 const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
+    cooldown: 15,
     data: new SlashCommandBuilder()
         .setName("deposit")
         .setDescription("Deposit money into your bank")

@@ -2,17 +2,18 @@ const { TicTacToe } = require("discord-gamecord");
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
+	cooldown: 10,
 	data: new SlashCommandBuilder()
 		.setName("tictactoe")
 		.setDescription("Starts a game of tic-tac-toe")
 		.addUserOption((option) =>
-      		option.setName("user").setRequired(true).setDescription("opponent")
-      	),
+			option.setName("user").setRequired(true).setDescription("opponent"),
+		),
 	async execute(interaction) {
 		const Game = new TicTacToe({
 			message: interaction,
 			isSlashGame: true,
-			opponent: interaction.options.getUser('user'),
+			opponent: interaction.options.getUser("user"),
 			embed: {
 				title: "Tic Tac Toe",
 				color: "#5865F2",

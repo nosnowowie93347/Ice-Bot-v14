@@ -21,6 +21,9 @@ const axios = require("axios");
 const client = new Client({
 	intents:
 		[GatewayIntentBits.Guilds] |
+		[GatewayIntentBits.GuildInvites] |
+		[GatewayIntentBits.GuildBans] |
+		[GatewayIntentBits.GuildModeration] |
 		[GatewayIntentBits.DirectMessages] |
 		[GatewayIntentBits.GuildMembers] |
 		[GatewayIntentBits.GuildEmojisAndStickers] |
@@ -47,6 +50,7 @@ for (const file of eventFiles) {
 }
 
 client.commands = getCommands("./commands");
+client.cooldowns = new Collection();
 
 client.once(Events.ClientReady, (c) => {
 	mongoose.set("strictQuery", false);
@@ -98,13 +102,63 @@ client.on(Events.InteractionCreate, (interaction) => {
 	if (!interaction.isChatInputCommand()) return;
 
 	let command = client.commands.get(interaction.commandName);
+	const { cooldowns } = interaction.client;
 
+	if (!cooldowns.has(command.data.name)) {
+		cooldowns.set(command.data.name, new Collection());
+	}
+
+	const now = Date.now();
+	const timestamps = cooldowns.get(command.data.name);
+	const defaultCooldownDuration = 3;
+	const cooldownAmount = (command.cooldown ?? defaultCooldownDuration) * 1000;
+
+	if (timestamps.has(interaction.user.id)) {
+		const expirationTime =
+			timestamps.get(interaction.user.id) + cooldownAmount;
+
+		if (now < expirationTime) {
+			const expiredTimestamp = Math.round(expirationTime / 1000);
+			return interaction.reply({
+				content: `Please wait, you are on a cooldown for \`${command.data.name}\`. You can use it again <t:${expiredTimestamp}:R>.`,
+				ephemeral: true,
+			});
+		}
+	}
+
+	timestamps.set(interaction.user.id, now);
+	setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 	try {
 		if (interaction.replied) return;
 		command.execute(interaction);
 	} catch (error) {
 		console.error(error);
 	}
+
+	const channel = client.channels.cache.get("986737674574508063");
+	const server = interaction.guild.name;
+	const user = interaction.user.username;
+	const userID = interaction.user.id;
+
+	const thisembed = new EmbedBuilder()
+		.setColor("DarkVividPink")
+		.setTitle(`Command Used! `)
+		.addFields({
+			name: `Server Name`,
+			value: `${server}`,
+		})
+		.addFields({
+			name: `Command`,
+			value: `${interaction}`,
+		})
+		.addFields({
+			name: `User`,
+			value: `${user} / ${userID}`,
+		})
+		.setTimestamp()
+		.setFooter({ text: `Command Executed` });
+
+	channel.send({ embeds: [thisembed] });
 });
 
 client.on(Events.Error, (error) => {

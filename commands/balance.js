@@ -2,11 +2,11 @@ const User = require("../models/User");
 const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
+    cooldown: 20,
     data: new SlashCommandBuilder()
         .setName("balance")
         .setDescription("Check your balance or view another user's balance.")
         .addUserOption((option) =>
-          
             option
                 .setName("user")
                 .setRequired(false)

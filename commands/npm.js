@@ -8,6 +8,7 @@ const {
 const moment = require("moment-timezone");
 
 module.exports = {
+    cooldown: 10,
     data: new SlashCommandBuilder()
         .setName("npm")
         .setDescription("Searches npm")

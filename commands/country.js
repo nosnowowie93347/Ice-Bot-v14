@@ -3,6 +3,7 @@ const axios = require("axios"); // npm i axios
 const wait = require("node:timers/promises").setTimeout;
 
 module.exports = {
+    cooldown: 10,
     data: new SlashCommandBuilder()
         .setName("country") // Name Of Slash Command
         .setDescription("Get Info Of A Country") // Description Of Slash Command

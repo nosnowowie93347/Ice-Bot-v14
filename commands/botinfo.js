@@ -42,24 +42,32 @@ module.exports = {
                     {
                         name: "Total commands: ",
                         value: `${client.commands.size} commands`,
+                        inline: true,
                     },
                     {
                         name: "Total Servers: ",
                         value: `${client.guilds.cache.size}`,
+                        inline: true,
                     },
                     {
                         name: "Total Users: ",
                         value: `${client.users.cache.size}`,
+                        inline: true,
                     },
                     { name: "Library: ", value: "Discord.js V14" },
                     {
                         name: "-------------------------------------------------------------------------------",
                         value: "----------------------------------------------------------------------------",
                     },
-                    { name: "Platform: ", value: `${osutils.platform()}` },
+                    {
+                        name: "Platform: ",
+                        value: `${osutils.platform()}`,
+                        inline: true,
+                    },
                     {
                         name: "VPS CPU Cores: ",
                         value: `${osutils.cpuCount()}` + " Cores",
+                        inline: true,
                     },
                     {
                         name: "Total Memory: ",
@@ -77,6 +85,7 @@ module.exports = {
                                 .split(".")[1]
                                 .split("")[1] +
                             "MB",
+                        inline: true,
                     },
                 );
             interaction.reply({ embeds: [embed] });

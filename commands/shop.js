@@ -7,6 +7,7 @@ const {
 const config = require("../utils/default");
 
 module.exports = {
+    cooldown: 20,
     data: new SlashCommandBuilder()
         .setName("shop")
         .setDescription("Shop with your money")

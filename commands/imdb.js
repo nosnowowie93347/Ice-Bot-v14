@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const imdb = require("imdb-api");
 
 module.exports = {
+  cooldown: 15,
   data: new SlashCommandBuilder()
     .setName("imdb")
     .setDescription("get info about a movie/show")
@@ -9,7 +10,7 @@ module.exports = {
       option
         .setName("name")
         .setRequired(true)
-        .setDescription("name of movie or show")
+        .setDescription("name of movie or show"),
     ),
   async execute(interaction) {
     let nameofcontent = interaction.options.getString("name");
@@ -31,13 +32,13 @@ module.exports = {
         .addFields(
           { name: "Country", value: `${movie.country}` },
           { name: "Languages", value: `${movie.languages}` },
-          { name: "Type", value: `${movie.type}` }
+          { name: "Type", value: `${movie.type}` },
         );
       return interaction.reply({ embeds: [embed] });
     } catch (err) {
       console.log(err);
       return interaction.reply(
-        `Something went wrong. Potential error message: ${err}`
+        `Something went wrong. Potential error message: ${err}`,
       );
     }
   },
