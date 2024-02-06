@@ -10,8 +10,8 @@ module.exports = {
         start_money: 5000,
 
         // Work Command!
-        work_money_min: 200,
-        work_money_max: 750,
+        work_money_min: 100,
+        work_money_max: 650,
         work_cooldown_time: 300,
         work_multiple: 1, // default 1 = boost money 100%
 
@@ -42,7 +42,7 @@ module.exports = {
 
         work_multiple: 1, // Multiple x1 every buy
         work_multiple_max: 5, // Max work multiple!
-        work_multiple_cost: 100000, // Work multiple cost!
+        work_multiple_cost: 10000, // Work multiple cost!
 
         crime_reduce_cost: 100000, // Crime reduce cost!
         reduce_crime_cooldown: 5, // Reduce 1s every buy

@@ -57,6 +57,7 @@ module.exports = {
             });
         } else {
             const formatBoost = amount * user.work_multiple;
+            console.log(user.work_multiple);
             // Get boost amount
             user.balance += formatBoost;
             /// Save database

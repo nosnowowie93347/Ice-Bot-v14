@@ -33,18 +33,15 @@
     "nekos.life": "^2.0.9",
     "node-superfetch": "^0.3.3",
     "os-utils": "^0.0.14",
-    "puppeteer": "^21.10.0",
+    "puppeteer": "^22.0.0",
     "superagent": "^8.1.2"
   },
   "devDependencies": {
-    "prettier": "^3.2.4"
+    "prettier": "^3.2.5"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nosnowowie93347/Ice-Bot-v14.git"
-  },
-  "bugs": {
-    "url": "https://github.com/nosnowowie93347/Ice-Bot-v14/issues"
   },
   "homepage": "https://github.com/nosnowowie93347/Ice-Bot-v14#readme"
 }
