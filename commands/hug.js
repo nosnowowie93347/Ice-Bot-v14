@@ -3,6 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder, Discord } = require("discord.js");
 const neko = new client();
 
 module.exports = {
+  cooldown: 10,
   data: new SlashCommandBuilder()
     .setName("hug")
     .setDescription("hugs a mentioned user")
@@ -19,7 +20,7 @@ module.exports = {
       const hugembed = new EmbedBuilder()
         .setTitle(target.username + " You have been hugged!")
         .setDescription(
-          target.toString() + " got hugged by " + interaction.user,
+          target.toString() + " got hugged by " + interaction.user.username,
         )
         .setImage(owo.url)
         .setColor(`#000000`)

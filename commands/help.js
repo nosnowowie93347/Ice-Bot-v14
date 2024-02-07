@@ -9,6 +9,7 @@ const {
 } = require("discord.js");
 
 module.exports = {
+  cooldown: 10,
   data: new SlashCommandBuilder().setName("help").setDescription("Get help"),
   async execute(interaction, client) {
     const embed = new EmbedBuilder()

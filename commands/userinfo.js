@@ -139,6 +139,7 @@ module.exports = {
         {
           name: "Discord Registered",
           value: `<t:${parseInt(target.user.createdTimestamp / 1000)}:R> (hover for full date)`,
+          inline: true
         },
       )
       .setFooter({ text: `Requested by ${target.user.tag}` })

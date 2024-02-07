@@ -3,6 +3,7 @@ const fs = require("fs");
 const osutils = require("os-utils");
 
 module.exports = {
+    cooldown: 10,
     data: new SlashCommandBuilder()
         .setName("botinfo")
         .setDescription("Info about the bot"),
@@ -58,6 +59,45 @@ module.exports = {
                     {
                         name: "-------------------------------------------------------------------------------",
                         value: "----------------------------------------------------------------------------",
+                    },
+                    {
+                        name: "VPS RAM Usage",
+                        value: `${(osutils.totalmem() - osutils.freemem()).toString().split(".")[0] + "." + (osutils.totalmem() - osutils.freemem()).toString().split(".")[1].split("")[0] + (osutils.totalmem() - osutils.freemem()).toString().split(".")[1].split("")[1]}/${osutils.totalmem().toString().split(".")[0] + "." + osutils.totalmem().toString().split(".")[1].split("")[0] + osutils.totalmem().toString().split(".")[1].split("")[1]}MB`,
+                        inline: true,
+                    },
+                    {
+                        name: "VPS RAM Usage %",
+                        value: `${(100 - osutils.freememPercentage() * 100).toString().split(".")[0] + "." + (100 - osutils.freememPercentage() * 100).toString().split(".")[1].split("")[0] + (100 - osutils.freememPercentage() * 100).toString().split(".")[1].split("")[1]}%`,
+                        inline: true,
+                    },
+                    {
+                        name: "Bot RAM Usage",
+                        value:
+                            (
+                                process.memoryUsage().heapUsed /
+                                1024 /
+                                1024
+                            ).toFixed(2) +
+                            "MB/" +
+                            osutils.totalmem().toString().split(".")[0] +
+                            "." +
+                            osutils
+                                .totalmem()
+                                .toString()
+                                .split(".")[1]
+                                .split("")[0] +
+                            osutils
+                                .totalmem()
+                                .toString()
+                                .split(".")[1]
+                                .split("")[1] +
+                            "MB",
+                        inline: true,
+                    },
+                    {
+                        name: "CPU Usage",
+                        value: `${(v * 100).toString().split(".")[0] + "." + (v * 100).toString().split(".")[1].split("")[0] + (v * 100).toString().split(".")[1].split("")[1]}%`,
+                        inline: true,
                     },
                     {
                         name: "Platform: ",

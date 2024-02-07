@@ -10,6 +10,7 @@ const calculateLevelXp = require("../utils/calculateLevelXP");
 const Level = require("../models/Level");
 
 module.exports = {
+  cooldown: 10,
   data: new SlashCommandBuilder()
     .setName("level")
     .setDescription("check a user's level")

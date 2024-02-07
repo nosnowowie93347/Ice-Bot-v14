@@ -101,7 +101,7 @@ module.exports = {
       "https://m6.imhentai.xxx/020/msgd4jneih/669t.jpg",
       "https://m8.imhentai.xxx/025/3vsb09zp7j/thumb.jpg",
       "https://m6.imhentai.xxx/020/msgd4jneih/47t.jpg",
-      "https://m6.imhentai.xxx/020/msgd4jneih/23t.jpg"
+      "https://m6.imhentai.xxx/020/msgd4jneih/23t.jpg",
     ];
     var randomNumber = response[Math.floor(Math.random() * response.length)];
     const lewdembed = new EmbedBuilder()

@@ -6,6 +6,7 @@ const {
 const clientId = require("../config.json");
 
 module.exports = {
+  cooldown: 10,
   data: new SlashCommandBuilder()
     .setName("kick")
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)

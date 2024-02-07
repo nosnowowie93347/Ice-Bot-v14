@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
+  cooldown: 10,
   data: new SlashCommandBuilder()
     .setName("emojilist")
     .setDescription("List emojis in this guild"),

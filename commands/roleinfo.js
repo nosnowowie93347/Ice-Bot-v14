@@ -49,10 +49,26 @@ module.exports = {
 				value: `${count}`,
 				inline: true,
 			})
+			.addFields({
+				name: "Created At",
+				value: `<t:${parseInt(role.createdTimestamp / 1000)}:R> (hover for full date)`,
+				inline: true,
+			})
+			.addFields({
+				name: "Is Managed",
+				value: `${role.managed}`,
+				inline: true,
+			})
+			.addFields({
+				name: "Role Icon",
+				value: `${role.iconURL()}`,
+				inline: true,
+			})
 			.setFooter({
 				text: `Requested by: ${interaction.user.tag}`,
 				inline: true,
 			})
+
 			.setTimestamp();
 
 		await interaction.reply({ embeds: [embed] });

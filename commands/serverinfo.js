@@ -11,7 +11,7 @@ module.exports = {
     const emojis = interaction.guild.emojis.cache.size;
     const id = interaction.guild.id;
     let baseVerification = interaction.guild.VerificationLevel;
-
+    let bans = interaction.guild.bans.fetch();
     if (baseVerification == 0) baseVerification = "none";
     if (baseVerification == 1) baseVerification = "low";
     if (baseVerification == 2) baseVerification = "medium";
@@ -21,12 +21,23 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor("Blue")
       .setThumbnail(icon)
+      .setImage(interaction.guild.bannerURL())
       .setAuthor({ name: interaction.guild.name, iconURL: icon })
       .setTimestamp()
       .addFields({
         name: "Name",
         value: `${interaction.guild.name}`,
         inline: false,
+      })
+      .addFields({
+        name: "Guild Description",
+        value: `${interaction.guild.description}`,
+        inline: true,
+      })
+      .addFields({
+        name: "Members",
+        value: `${interaction.guild.memberCount}`,
+        inline: true,
       })
       .addFields({
         name: "Date Created: ",
@@ -36,6 +47,11 @@ module.exports = {
       .addFields({
         name: "Role Number: ",
         value: `${roles}`,
+        inline: true,
+      })
+      .addFields({
+        name: "MFA Level",
+        value: `${interaction.guild.mfaLevel}`,
         inline: true,
       })
       .addFields({
@@ -50,7 +66,7 @@ module.exports = {
       })
       .addFields({
         name: "Verification Level: ",
-        value: `${interaction.guild.VerificationLevel}`,
+        value: `${baseVerification}`,
         inline: true,
       });
 

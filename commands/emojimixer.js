@@ -4,7 +4,7 @@ const { tenorkey } = require("../config.json");
 const onlyEmoji = require("emoji-aware").onlyEmoji;
 
 module.exports = {
-	cooldown: 10,
+	cooldown: 15,
 	data: new SlashCommandBuilder()
 		.setName("emojimixer")
 		.setDescription("Combine two different emojis")

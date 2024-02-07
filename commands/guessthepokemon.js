@@ -2,6 +2,7 @@ const { GuessThePokemon } = require("discord-gamecord");
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
+  cooldown: 10,
   data: new SlashCommandBuilder()
     .setName("guessthepokemon")
     .setDescription("Who's that pokemon?"),

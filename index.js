@@ -99,6 +99,43 @@ process.on("uncaughtException", (err) => {
 });
 
 client.on(Events.InteractionCreate, (interaction) => {
+	if (!interaction.isModalSubmit) return;
+	if (interaction.customId === "bugreport") {
+		const command = interaction.fields.getTextInputValue("command");
+		const description = interaction.fields.getTextInputValue("description");
+		const id = interaction.user.id;
+		const member = interaction.member;
+		const server = interaction.guild.id || `no server provided`;
+		const channel = client.channels.cache.get("986737676550029322");
+
+		const embed = new EmbedBuilder()
+			.setColor("LuminousVividPink")
+			.setTitle(`Report from ${member.user.username}`)
+			.addFields({
+				name: "User ID",
+				value: `${id}`,
+			})
+			.addFields({
+				name: "Member",
+				value: `${member}`,
+			})
+			.addFields({
+				name: "Server ID",
+				value: `${server}`,
+			})
+			.addFields({
+				name: "Command Reported",
+				value: `${command}`,
+			})
+			.addFields({
+				name: "Report Description",
+				value: `${description}`,
+			})
+			.setTimestamp()
+			.setFooter({ text: `Report System` });
+		channel.send({ embeds: [embed] }).catch((err) => {});
+		interaction.reply({ content: `Report submitted.`, ephemeral: true });
+	}
 	if (!interaction.isChatInputCommand()) return;
 
 	let command = client.commands.get(interaction.commandName);

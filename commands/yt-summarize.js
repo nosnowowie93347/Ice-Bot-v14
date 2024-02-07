@@ -2,11 +2,12 @@ const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 const puppeteer = require("puppeteer");
 
 module.exports = {
+  cooldown: 20,
   data: new SlashCommandBuilder()
     .setName("yt-summarize")
     .setDescription("Summarize a YT video")
     .addStringOption((option) =>
-      option.setName("url").setDescription("Video URL").setRequired(true)
+      option.setName("url").setDescription("Video URL").setRequired(true),
     ),
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
@@ -16,11 +17,11 @@ module.exports = {
     const page = await browser.newPage();
     await page.goto("https://summarize.tech/");
     await page.waitForSelector(
-      'input.me-auto.form-control[placeholder="URL of a YouTube video"]'
+      'input.me-auto.form-control[placeholder="URL of a YouTube video"]',
     );
     await page.type(
       'input.me-auto.form-control[placeholder="URL of a YouTube video"]',
-      url
+      url,
     );
 
     await page.keyboard.press("Enter");
@@ -37,7 +38,7 @@ module.exports = {
 
     if (!text)
       return await interaction.editReply(
-        "This video doesn't have a transcript."
+        "This video doesn't have a transcript.",
       );
 
     text = text.replace("YouTube video", `[YouTube video](${url})`);

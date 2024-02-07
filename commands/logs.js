@@ -27,7 +27,7 @@ module.exports = {
             .setDescription("The page to display if there are more than 1")
             .setMinValue(2)
             .setMaxValue(20);
-        })
+        }),
     ),
 
   /**
@@ -72,19 +72,15 @@ module.exports = {
 
             for (const warnings of userWarnings.splice(pageNum, 5)) {
               const moderator = interaction.guild.members.cache.get(
-                warnings.moderator
+                warnings.moderator,
               );
 
               embed.addFields({
                 name: `id: ${warnings._id}`,
                 value: `
-                  Moderator: ${
-                    moderator || "Moderator left"
-                  }
+                  Moderator: ${moderator || "Moderator left"}
                   :replycontinued: User: ${warnings.userId}
-                  :replycontinued: Reason: \`${
-                    warnings.warnReason
-                  }\`
+                  :replycontinued: Reason: \`${warnings.warnReason}\`
                   :reply: Date: ${warnings.warnDate}
                   `,
               });
@@ -101,19 +97,15 @@ module.exports = {
 
           for (const warns of userWarnings.slice(0, 5)) {
             const moderator = interaction.guild.members.cache.get(
-              warns.moderator
+              warns.moderator,
             );
 
             embed.addFields({
               name: `id: ${warns._id}`,
               value: `
-                Moderator: ${
-                  moderator || "Moderator left"
-                }
+                Moderator: ${moderator || "Moderator left"}
                 :replycontinued: User: ${warns.userId}
-                :replycontinued: Reason: \`${
-                  warns.warnReason
-                }\`
+                :replycontinued: Reason: \`${warns.warnReason}\`
                 :reply: Date: ${warns.warnDate}
                 `,
             });

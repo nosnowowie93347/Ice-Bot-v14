@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const google = require("images-scraper");
 
 module.exports = {
+	cooldown: 10,
 	data: new SlashCommandBuilder()
 		.setName("googleimages")
 		.setDescription("Google an image")

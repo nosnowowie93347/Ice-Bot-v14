@@ -2,7 +2,7 @@ const { Discord, EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 const got = require("got");
 
 module.exports = {
-	cooldown: 15,
+	cooldown: 25,
 	data: new SlashCommandBuilder()
 		.setName("meme")
 		.setDescription("Gets a meme"),

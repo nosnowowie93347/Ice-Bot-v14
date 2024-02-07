@@ -5,6 +5,7 @@ const {
 } = require("discord.js");
 
 module.exports = {
+	cooldown: 10,
 	data: new SlashCommandBuilder()
 		.setName("eval")
 		.setDescription("This warns a user")

@@ -22,8 +22,8 @@ module.exports = {
             .setName("channel")
             .setDescription("Channel to send the message to.")
             .addChannelTypes(ChannelType.GuildText)
-            .setRequired(true)
-        )
+            .setRequired(true),
+        ),
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -34,13 +34,13 @@ module.exports = {
             .setName("channel")
             .setDescription("Channel to send the message to.")
             .addChannelTypes(ChannelType.GuildText)
-            .setRequired(true)
-        )
+            .setRequired(true),
+        ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("delete")
-        .setDescription("Deletes config for the modlogs.")
+        .setDescription("Deletes config for the modlogs."),
     ),
 
   /**
@@ -78,7 +78,7 @@ module.exports = {
                 new EmbedBuilder()
                   .setTitle("Modlogs setup!")
                   .setDescription(
-                    `Modlogs have been successfully setup in ${channel.mention}`
+                    `Modlogs have been successfully setup in ${channel.mention}`,
                   )
                   .setColor(0x00ff00),
               ],
@@ -106,7 +106,7 @@ module.exports = {
           modSchema
             .findOneAndUpdate(
               { guildId: interaction.guild.id },
-              { channelId: channel.id }
+              { channelId: channel.id },
             )
             .catch((err) => console.log(err));
 
@@ -116,7 +116,7 @@ module.exports = {
                 new EmbedBuilder()
                   .setTitle("Modlogs channel replaced!")
                   .setDescription(
-                    `Modlogs channel has been successfully replaced in <#${channel.id}>`
+                    `Modlogs channel has been successfully replaced in <#${channel.id}>`,
                   )
                   .setColor(0x00ff00),
               ],

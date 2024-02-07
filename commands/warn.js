@@ -93,7 +93,7 @@ module.exports = {
           });
 
           if (modData) {
-            client.channels.cache.get(modData.channelId).send({
+            interaction.client.channels.cache.get(modData.channelId).send({
               embeds: [
                 new EmbedBuilder().setTitle("New user warned").addFields(
                   {

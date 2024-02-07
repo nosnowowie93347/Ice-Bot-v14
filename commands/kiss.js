@@ -3,6 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder, Discord } = require("discord.js");
 const neko = new client();
 
 module.exports = {
+  cooldown: 10,
   data: new SlashCommandBuilder()
     .setName("kiss")
     .setDescription("Kisses for someone!")
@@ -12,7 +13,7 @@ module.exports = {
 
   async execute(interaction) {
     const target = interaction.options.getUser("user");
-    await interaction.deferReply()
+    await interaction.deferReply();
     async function work() {
       let owo = await neko.sfw.kiss();
 
@@ -25,7 +26,7 @@ module.exports = {
         .setColor(`#000000`)
         .setURL(owo.url);
 
-       interaction.editReply({ embeds: [kissembed] });
+      interaction.editReply({ embeds: [kissembed] });
     }
 
     work();

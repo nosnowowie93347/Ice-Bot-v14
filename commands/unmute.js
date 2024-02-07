@@ -6,6 +6,7 @@ const {
 const ms = require("ms");
 
 module.exports = {
+  cooldown: 10,
   data: new SlashCommandBuilder()
     .setName("unmute")
     .setDescription("Unmute someone")
