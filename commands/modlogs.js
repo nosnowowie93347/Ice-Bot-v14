@@ -78,7 +78,7 @@ module.exports = {
                 new EmbedBuilder()
                   .setTitle("Modlogs setup!")
                   .setDescription(
-                    `Modlogs have been successfully setup in ${channel.mention}`,
+                    `Modlogs have been successfully setup in ${channel.name}`,
                   )
                   .setColor(0x00ff00),
               ],

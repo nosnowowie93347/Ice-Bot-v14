@@ -1,11 +1,13 @@
 const {
     SlashCommandBuilder,
+    PermissionsBitField,
     EmbedBuilder,
     PermissionFlagsBits,
 } = require("discord.js");
 const welcomeSchema = require("../models/welcome");
 
 module.exports = {
+    cooldown: 10,
     data: new SlashCommandBuilder()
         .setName("welcome")
         .setDescription("Welcome System")

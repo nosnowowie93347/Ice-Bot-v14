@@ -1,6 +1,7 @@
 const {
 	EmbedBuilder,
 	SlashCommandBuilder,
+	PermissionFlagsBits,
 	PermissionsBitField,
 } = require("discord.js");
 const reaction = require("../models/reactionrs");
@@ -8,6 +9,7 @@ const reaction = require("../models/reactionrs");
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("reaction-roles")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
 		.setDescription("Manage reaction roles system")
 		.addSubcommand((command) =>
 			command
@@ -59,15 +61,6 @@ module.exports = {
 				e = err;
 			});
 
-		if (
-			!interaction.member.permissions.has(
-				PermissionsBitField.Flags.Administrator,
-			)
-		)
-			return await interaction.reply({
-				content: "You don't have permission to use this.",
-				ephemeral: true,
-			});
 		if (e)
 			return await interaction.reply({
 				content: `Be sure to get a message from ${interaction.channel}!`,
