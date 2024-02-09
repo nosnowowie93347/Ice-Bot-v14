@@ -97,7 +97,33 @@ client.once(Events.ClientReady, (c) => {
 process.on("uncaughtException", (err) => {
 	console.log("Uncaught exception: ", err);
 });
+const counting = require('./models/countingschema')
+client.on(Events.MessageCreate, async message => {
+	if (!message.guild) return;
+	if (message.author.bot) return;
 
+	const data = await counting.findOne({
+		Guild: message.guild.id
+	});
+	if (!data) return;
+	else {
+		if (message.channel.id !== data.Channel) return;
+		const number = Number(message.content);
+
+		if (number !== data.Number) {
+			return message.react('❌');
+		} else if (data.LastUser === message.author.id) {
+			message.react('❌');
+			await message.reply(`Someone else has to count that number!`)
+		} else {
+			await message.react('✅');
+
+			data.LastUser = message.author.id;
+			data.Number++;
+			await data.save();
+		}
+	}
+});
 client.on(Events.InteractionCreate, (interaction) => {
 	if (!interaction.isModalSubmit) return;
 	if (interaction.customId === "bugreport") {
