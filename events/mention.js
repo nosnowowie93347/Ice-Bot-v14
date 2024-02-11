@@ -14,7 +14,7 @@ module.exports = {
 				.setColor("Blurple")
 				.setTitle(`Want to use me?`)
 				.setDescription(
-					`Run my /help command to get started! I have many different features.`,
+					`Run my /help command to get started! I have many different features.`
 				);
 
 			if (!reply) {
@@ -28,7 +28,7 @@ module.exports = {
 					new ButtonBuilder()
 						.setCustomId(`replymsgDelete`)
 						.setLabel(`🗑️`)
-						.setStyle(ButtonStyle.Danger),
+						.setStyle(ButtonStyle.Danger)
 				);
 
 				const msg = await message.reply({
@@ -39,6 +39,7 @@ module.exports = {
 				collector.on("collect", async (i) => {
 					if (i.customId == "replymsgDelete") {
 						await message.delete();
+						await msg.delete();
 					}
 				});
 			}

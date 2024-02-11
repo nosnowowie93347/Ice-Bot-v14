@@ -7,9 +7,9 @@ const {
 const reaction = require("../models/reactionrs");
 
 module.exports = {
+	mod: true,
 	data: new SlashCommandBuilder()
 		.setName("reaction-roles")
-		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
 		.setDescription("Manage reaction roles system")
 		.addSubcommand((command) =>
 			command
@@ -19,20 +19,20 @@ module.exports = {
 					option
 						.setName("message-id")
 						.setDescription("Message to react to")
-						.setRequired(true),
+						.setRequired(true)
 				)
 				.addStringOption((option) =>
 					option
 						.setName("emoji")
 						.setDescription("Emoji to react with")
-						.setRequired(true),
+						.setRequired(true)
 				)
 				.addRoleOption((option) =>
 					option
 						.setName("role")
 						.setDescription("role to give")
-						.setRequired(true),
-				),
+						.setRequired(true)
+				)
 		)
 		.addSubcommand((command) =>
 			command
@@ -42,14 +42,14 @@ module.exports = {
 					option
 						.setName("message-id")
 						.setDescription("Message to react to")
-						.setRequired(true),
+						.setRequired(true)
 				)
 				.addStringOption((option) =>
 					option
 						.setName("emoji")
 						.setDescription("Emoji to react with")
-						.setRequired(true),
-				),
+						.setRequired(true)
+				)
 		),
 	async execute(interaction) {
 		const emoji = interaction.options.getString("emoji");
@@ -91,7 +91,7 @@ module.exports = {
 				const embed = new EmbedBuilder()
 					.setColor("Blurple")
 					.setDescription(
-						`:saluting_face: I have added reaction role to ${message.url} with ${emoji} and the role ${role}`,
+						`:saluting_face: I have added reaction role to ${message.url} with ${emoji} and the role ${role}`
 					);
 
 				await message.react(emoji).catch((err) => {});
@@ -116,7 +116,7 @@ module.exports = {
 				const embed = new EmbedBuilder()
 					.setColor("Blurple")
 					.setDescription(
-						`:saluting_face: I have removed reaction role from ${message.url} with ${emoji}`,
+						`:saluting_face: I have removed reaction role from ${message.url} with ${emoji}`
 					);
 
 				await interaction.reply({ embeds: [embed], ephemeral: true });

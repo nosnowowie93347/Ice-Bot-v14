@@ -115,6 +115,14 @@ module.exports = {
       .setTimestamp()
       .addFields({ name: "/ban", value: "Ban anyone with one shot xD" })
       .addFields({ name: "/dm", value: "Sends a dm to anyone" })
+      .addFields({
+        name: "/modrole",
+        value: "setup mod roles in the guild. Must have admin perms",
+      })
+      .addFields({
+        name: "/counting",
+        value: "setup counting system. Must have admin perms",
+      })
       .addFields({ name: "/kick", value: "Kick anyone with one shot xD" })
       .addFields({ name: "/mute", value: "Mute anyone with one shot xD" })
       .addFields({
@@ -204,7 +212,7 @@ module.exports = {
       new ButtonBuilder()
         .setCustomId("page4")
         .setLabel("Page 4")
-        .setStyle(ButtonStyle.Success),
+        .setStyle(ButtonStyle.Success)
     );
 
     const message = await interaction.reply({
@@ -216,7 +224,7 @@ module.exports = {
       if (i.customId === "page1") {
         if (i.user.id !== interaction.user.id) {
           return await interaction.reply(
-            `Only ${interaction.user.id} can use this command`,
+            `Only ${interaction.user.id} can use this command`
           );
         }
         await i.update({ embeds: [embed], components: [button] });
@@ -225,7 +233,7 @@ module.exports = {
       if (i.customId === "page2") {
         if (i.user.id !== interaction.user.id) {
           return await interaction.reply(
-            `Only ${interaction.user.id} can use this command`,
+            `Only ${interaction.user.id} can use this command`
           );
         }
         await i.update({ embeds: [embed2], components: [button] });
@@ -234,7 +242,7 @@ module.exports = {
       if (i.customId === "page3") {
         if (i.user.id !== interaction.user.id) {
           return await interaction.reply(
-            `Only ${interaction.user.id} can use this command`,
+            `Only ${interaction.user.id} can use this command`
           );
         }
         await i.update({ embeds: [embed3], components: [button] });
@@ -243,7 +251,7 @@ module.exports = {
       if (i.customId === "page4") {
         if (i.user.id !== interaction.user.id) {
           return await interaction.reply(
-            `Only ${interaction.user.id} can use this command`,
+            `Only ${interaction.user.id} can use this command`
           );
         }
         await i.update({ embeds: [embed4], components: [button] });

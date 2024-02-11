@@ -60,7 +60,7 @@ client.once(Events.ClientReady, (c) => {
 			text: "Connected to Database",
 			e: "oO",
 			T: "U ",
-		}),
+		})
 	);
 	let status = [
 		{
@@ -85,7 +85,7 @@ client.once(Events.ClientReady, (c) => {
 		cowsay.say({
 			text: `Logged in as ${c.user.tag}`,
 			f: "dragon-and-cow",
-		}),
+		})
 	);
 
 	setInterval(() => {
@@ -97,13 +97,13 @@ client.once(Events.ClientReady, (c) => {
 process.on("uncaughtException", (err) => {
 	console.log("Uncaught exception: ", err);
 });
-const counting = require('./models/countingschema')
-client.on(Events.MessageCreate, async message => {
+const counting = require("./models/countingschema");
+client.on(Events.MessageCreate, async (message) => {
 	if (!message.guild) return;
 	if (message.author.bot) return;
 
 	const data = await counting.findOne({
-		Guild: message.guild.id
+		Guild: message.guild.id,
 	});
 	if (!data) return;
 	else {
@@ -111,12 +111,12 @@ client.on(Events.MessageCreate, async message => {
 		const number = Number(message.content);
 
 		if (number !== data.Number) {
-			return message.react('❌');
+			return message.react("❌");
 		} else if (data.LastUser === message.author.id) {
-			message.react('❌');
-			await message.reply(`Someone else has to count that number!`)
+			message.react("❌");
+			await message.reply(`Someone else has to count that number!`);
 		} else {
-			await message.react('✅');
+			await message.react("✅");
 
 			data.LastUser = message.author.id;
 			data.Number++;
@@ -166,9 +166,29 @@ client.on(Events.InteractionCreate, (interaction) => {
 
 	let command = client.commands.get(interaction.commandName);
 	const { cooldowns } = interaction.client;
-
+	//cooldown
 	if (!cooldowns.has(command.data.name)) {
 		cooldowns.set(command.data.name, new Collection());
+	}
+	//modrole
+	if (command.mod) {
+		var modRoleData = modrole.find({ Guild: interaction.guild.id });
+		if (modRoleData.length > 0) {
+			var check;
+			modRoleData.forEach((value) => {
+				const mRoles = interaction.member.roles.cache.map(
+					(role) => role.id
+				);
+				mRoles.forEach((value) => {
+					if (role == value.Role) check = true;
+				});
+			});
+
+			if (!check)
+				return interaction.reply(
+					`Only **moderators** can use this command.`
+				);
+		}
 	}
 
 	const now = Date.now();
@@ -230,7 +250,7 @@ client.on(Events.Error, (error) => {
 client.on(Events.GuildCreate, (guild) => {
 	// This event triggers when the bot joins a guild.
 	console.log(
-		`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`,
+		`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`
 	);
 });
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
@@ -288,7 +308,7 @@ client.on(Events.MessageUpdate, async (oldMessage, newMessage) => {
 			.setDescription(
 				`${
 					oldMessage.author.tag
-				} ghost pinged ${oldMessage.mentions.users.first()}`,
+				} ghost pinged ${oldMessage.mentions.users.first()}`
 			);
 		return oldMessage.channel.send(embed);
 	}
