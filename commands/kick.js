@@ -39,6 +39,16 @@ module.exports = {
 
     await interaction.reply({ embeds: [embed] });
 
-    target.kick();
+    try {
+      target.kick();
+    } catch (error) {
+      await interaction.reply({
+        content: `Their Was An Error While executing this command: ${error}`,
+        ephemeral: true,
+      });
+      await wait(6000);
+      await interaction.deleteReply();
+      console.log(error);
+    }
   },
 };
