@@ -5,6 +5,7 @@ module.exports = {
     cooldown: 15,
     data: new SlashCommandBuilder()
         .setName("deposit")
+        .setDMPermission(false)
         .setDescription("Deposit money into your bank")
         .addStringOption((option) =>
             option

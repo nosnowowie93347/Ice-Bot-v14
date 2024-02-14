@@ -4,6 +4,7 @@ module.exports = {
   cooldown: 10,
   data: new SlashCommandBuilder()
     .setName("emojilist")
+    .setDMPermission(false)
     .setDescription("List emojis in this guild"),
   async execute(interaction) {
     async function chunkArray(array, size) {

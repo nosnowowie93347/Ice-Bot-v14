@@ -7,6 +7,7 @@ module.exports = {
 	cooldown: 15,
 	data: new SlashCommandBuilder()
 		.setName("emojimixer")
+		.setDMPermission(false)
 		.setDescription("Combine two different emojis")
 		.addStringOption((option) =>
 			option

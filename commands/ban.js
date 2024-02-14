@@ -45,7 +45,7 @@ module.exports = {
 
     // Ban the targetUser
     try {
-      await targetUser.ban({ reason });
+      await targetUser.ban({ reason: reason, deleteMessageSeconds: 604800 });
       await interaction.editReply(
         `User ${targetUser} was banned\nReason: ${reason}`,
       );

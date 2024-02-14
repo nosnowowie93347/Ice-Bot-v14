@@ -6,6 +6,7 @@ const dailyAmount = 1000;
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("daily")
+    .setDMPermission(false)
     .setDescription("Collect dailies"),
 
   async execute(interaction) {

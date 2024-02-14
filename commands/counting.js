@@ -11,6 +11,7 @@ module.exports = {
 	cooldown: 20,
 	data: new SlashCommandBuilder()
 		.setName("counting")
+		.setDMPermission(false)
 		.setDescription("Manage the counting system")
 		.addSubcommand((command) =>
 			command
@@ -21,11 +22,13 @@ module.exports = {
 						.setName("channel")
 						.setDescription("channel for counting")
 						.addChannelTypes(ChannelType.GuildText)
-						.setRequired(true)
-				)
+						.setRequired(true),
+				),
 		)
 		.addSubcommand((command) =>
-			command.setName("disable").setDescription("disable counting system")
+			command
+				.setName("disable")
+				.setDescription("disable counting system"),
 		),
 	async execute(interaction) {
 		const sub = interaction.options.getSubcommand();
@@ -49,7 +52,7 @@ module.exports = {
 					const embed = new EmbedBuilder()
 						.setColor("Blurple")
 						.setDescription(
-							`System setup! Go to ${channel} and start at number 1`
+							`System setup! Go to ${channel} and start at number 1`,
 						);
 
 					await interaction.reply({
@@ -73,7 +76,7 @@ module.exports = {
 					const embed = new EmbedBuilder()
 						.setColor("Blurple")
 						.setDescription(
-							`The counting system has been disabled for this server`
+							`The counting system has been disabled for this server`,
 						);
 
 					await interaction.reply({

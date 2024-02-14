@@ -116,7 +116,7 @@ module.exports = {
         },
 
         {
-          name: "Has passed screening?",
+          name: "Is pending",
           value: `${target.pending}`,
           inline: true,
         },
@@ -139,7 +139,7 @@ module.exports = {
         {
           name: "Discord Registered",
           value: `<t:${parseInt(target.user.createdTimestamp / 1000)}:R> (hover for full date)`,
-          inline: true
+          inline: true,
         },
       )
       .setFooter({ text: `Requested by ${target.user.tag}` })

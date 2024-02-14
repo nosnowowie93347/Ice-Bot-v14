@@ -60,7 +60,7 @@ client.once(Events.ClientReady, (c) => {
 			text: "Connected to Database",
 			e: "oO",
 			T: "U ",
-		})
+		}),
 	);
 	let status = [
 		{
@@ -85,7 +85,7 @@ client.once(Events.ClientReady, (c) => {
 		cowsay.say({
 			text: `Logged in as ${c.user.tag}`,
 			f: "dragon-and-cow",
-		})
+		}),
 	);
 
 	setInterval(() => {
@@ -123,6 +123,27 @@ client.on(Events.MessageCreate, async (message) => {
 			await data.save();
 		}
 	}
+});
+client.on(Events.GuildBanAdd, (ban) => {
+	const embed = new EmbedBuilder()
+		.setTitle("<:banhammer:1207101783340621877> Member Banned.")
+		.setColor("#dc143c")
+		.setAuthor({
+			name: client.user.tag,
+			iconURL: client.user.avatarURL({ dynamic: true }),
+		})
+		.setDescription(`Member ${ban.user} banned for ${ban.reason}`)
+		.setFooter({ text: `Requested by: ${client.user.tag}` })
+		.setThumbnail(ban.guild.iconURL())
+		.setTimestamp();
+	let channel = ban.guild.channels.cache.find(
+		(channel) => channel.name === "logs",
+	);
+
+	channel.send({ embeds: [embed] });
+	ban.user.send({
+		content: `You have been banned from ${ban.guild} for ${ban.reason}.\nShould have behaved yourself, you silly goose!`,
+	});
 });
 client.on(Events.InteractionCreate, (interaction) => {
 	if (!interaction.isModalSubmit) return;
@@ -177,7 +198,7 @@ client.on(Events.InteractionCreate, (interaction) => {
 			var check;
 			modRoleData.forEach((value) => {
 				const mRoles = interaction.member.roles.cache.map(
-					(role) => role.id
+					(role) => role.id,
 				);
 				mRoles.forEach((value) => {
 					if (role == value.Role) check = true;
@@ -186,7 +207,7 @@ client.on(Events.InteractionCreate, (interaction) => {
 
 			if (!check)
 				return interaction.reply(
-					`Only **moderators** can use this command.`
+					`Only **moderators** can use this command.`,
 				);
 		}
 	}
@@ -250,7 +271,7 @@ client.on(Events.Error, (error) => {
 client.on(Events.GuildCreate, (guild) => {
 	// This event triggers when the bot joins a guild.
 	console.log(
-		`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`
+		`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`,
 	);
 });
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
@@ -308,7 +329,7 @@ client.on(Events.MessageUpdate, async (oldMessage, newMessage) => {
 			.setDescription(
 				`${
 					oldMessage.author.tag
-				} ghost pinged ${oldMessage.mentions.users.first()}`
+				} ghost pinged ${oldMessage.mentions.users.first()}`,
 			);
 		return oldMessage.channel.send(embed);
 	}

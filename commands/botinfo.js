@@ -6,6 +6,7 @@ module.exports = {
     cooldown: 10,
     data: new SlashCommandBuilder()
         .setName("botinfo")
+        .setDMPermission(false)
         .setDescription("Info about the bot"),
     name: "botinfo",
     async execute(interaction) {

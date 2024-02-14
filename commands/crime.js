@@ -5,6 +5,7 @@ const config = require("../utils/default");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("crime")
+    .setDMPermission(false)
     .setDescription("Crime to earn some money"),
   async execute(interaction, client) {
     await interaction.deferReply({ ephemeral: false });

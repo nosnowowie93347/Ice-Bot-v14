@@ -15,6 +15,7 @@ const userSchema = new Schema({
   },
   lastDaily: {
     type: Date,
+    default: new Date("2024-02-09T03:52:33.218+00:00"),
     reqired: true,
   },
   work_cooldown_time: {
@@ -35,7 +36,7 @@ const userSchema = new Schema({
   },
   rob: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   rob_cooldown: {
     type: Number,

@@ -14,7 +14,7 @@
   "dependencies": {
     "@iamtraction/google-translate": "^2.0.1",
     "axios": ">=1.6.7",
-    "canvacord": "^6.0.1",
+    "canvacord": "^5.4.10",
     "canvas": "^2.11.2",
     "common-tags": "^1.8.2",
     "cowsay": "^1.6.0",

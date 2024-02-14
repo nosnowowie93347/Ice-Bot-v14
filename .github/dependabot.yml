@@ -11,6 +11,7 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: "got"
+      - dependency-name: "canvacord"
       - dependency-name: "delay"
       - dependency-name: "nekos.life"
       - dependency-name: "google-play-scraper"

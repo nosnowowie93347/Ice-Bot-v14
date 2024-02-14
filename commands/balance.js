@@ -5,6 +5,7 @@ module.exports = {
     cooldown: 20,
     data: new SlashCommandBuilder()
         .setName("balance")
+        .setDMPermission(false)
         .setDescription("Check your balance or view another user's balance.")
         .addUserOption((option) =>
             option
