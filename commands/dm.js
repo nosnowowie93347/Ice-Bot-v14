@@ -42,7 +42,9 @@ module.exports = {
       .setDescription(`${text}`)
       .setColor("#FBD570")
       .setTimestamp();
-    user.send({ embeds: [embed] });
+    user.send({ embeds: [embed] }).catch(err => {
+      console.log(`An error occured while trying to DM ${user.name}: ${err}`)
+    });
 
     let embed98 = new EmbedBuilder()
       .setTitle("**Message Sent**")

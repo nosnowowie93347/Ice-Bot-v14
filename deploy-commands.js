@@ -35,4 +35,6 @@ const rest = new REST({ version: "10" }).setToken(token);
 
 rest.put(Routes.applicationCommands(clientId), { body: commands })
 	.then(() => console.log(`Successfully registered application commands!`))
-	.catch(console.error);
+	.catch(err => {
+		console.error(`An error has occured: ${err}`)
+	});

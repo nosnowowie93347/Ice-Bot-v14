@@ -93,8 +93,14 @@ client.once(Events.ClientReady, (c) => {
 	}, 25000);
 });
 
+process.on('unhandledRejection', async (reason, promise) => {
+	console.log('Unhandled Promise Rejection at:', promise, 'reason:', reason);
+});
 process.on("uncaughtException", (err) => {
-	console.log("Uncaught exception: ", err);
+	console.log("Uh oh! There's an uncaught exception: ", err);
+});
+process.on("uncaughtExceptionMonitor", (err, origin) => {
+	console.log("Uncaught Exception Monitor", err, origin);
 });
 const counting = require("./models/countingschema");
 client.on(Events.MessageCreate, async (message) => {
@@ -243,6 +249,9 @@ client.on(Events.InteractionCreate, (interaction) => {
 
 client.on(Events.Error, (error) => {
 	console.error(`An error has occured: ${error}`);
+});
+client.on(Events.ShardError, error => {
+	console.error('A websocket connection encountered an error:', error);
 });
 client.on(Events.GuildCreate, (guild) => {
 	// This event triggers when the bot joins a guild.

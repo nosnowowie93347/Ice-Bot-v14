@@ -14,19 +14,23 @@
   * [Questions](#questions)
   
   ## Installation 
-  Step One: Clone the repo. Step Two: Fill out the config.json with the required info. Step Three: do npm install to install the requirements. Step 4: do node deploy-commands to make sure everything works right. Step 5: Do node index.js or node . to start the bot.
+  Step One: Clone the repo. Step Two: Fill out the config.json with the required info. Step Three: do `npm install` to install the requirements. Step 4: do `node deploy-commands` to make sure everything works right. Step 5: Do `node index.js` or `node .` to start the bot.
 
   ## Usage 
   This is a command-line application (of course, since it uses node.js)
 
-  ## License 
-  This project is license under MIT. I don't exactly know how that works, but more info above.
-
   ## Contributing 
-  Report bugs/issues using the issue tracker. Will eventually create issue templates to make things easier.
+  Will eventually create issue templates to make things easier. If you have any questions, check the FAQ, and if you're still confused, post a comment in the discussion thread.
 
   ## Tests
   I don't really know how node's testing works, but try running npm test
 
   ## Questions
-  You can view more of my projects at https://github.com/nosnowowie93347.
+  FAQ: [FAQ](https://github.com/nosnowowie93347/Ice-Bot-v14/discussions/20)
+  You can view more of my projects at (https://github.com/nosnowowie93347).
+
+  ## Task List
+  - [x] Add FAQ
+  - [x] Make help command more dynamic
+  - [ ] Add Mention inbox system where you can check for unread pings
+  - [ ] Add delight to the experience when all tasks are complete :tada:
