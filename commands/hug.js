@@ -15,7 +15,7 @@ module.exports = {
     const target = interaction.options.getUser("user");
     await interaction.deferReply();
     async function work() {
-      let owo = await neko.sfw.hug();
+      let owo = await neko.hug();
 
       const hugembed = new EmbedBuilder()
         .setTitle(target.username + " You have been hugged!")

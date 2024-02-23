@@ -15,7 +15,7 @@ module.exports = {
     const target = interaction.options.getUser("user");
     await interaction.deferReply();
     async function work() {
-      let owo = await neko.sfw.kiss();
+      let owo = await neko.kiss();
 
       const kissembed = new EmbedBuilder()
         .setTitle(target.username + " You have been kissed!")

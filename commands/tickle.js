@@ -4,17 +4,17 @@ const neko = new client();
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("poke")
-    .setDescription("poke a mentioned user")
+    .setName("tickle")
+    .setDescription("tickle a mentioned user")
     .addUserOption((option) =>
-      option.setName("user").setRequired(true).setDescription("user to poke"),
+      option.setName("user").setRequired(true).setDescription("user to tickle"),
     ),
 
   async execute(interaction) {
     const target = interaction.options.getUser("user");
     await interaction.deferReply();
     async function work() {
-      let owo = await neko.poke();
+      let owo = await neko.tickle();
 
       const pokeembed = new EmbedBuilder()
         .setTitle(target.username + " You have been poked!")

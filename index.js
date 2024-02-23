@@ -1,5 +1,6 @@
 const { token, MONGODB_URI } = require("./config.json");
 const cowsay = require("cowsay");
+const { ButtonBuilder, EmbedBuilder, ActionRowBuilder, ButtonStyle, ComponentType, ChannelType } = require('discord.js')
 const process = require("node:process");
 const mongoose = require("mongoose");
 const {
@@ -7,10 +8,8 @@ const {
 	ActivityType,
 	Events,
 	DMChannel,
-	ChannelType,
 	Partials,
 	PermissionsBitField,
-	EmbedBuilder,
 	GatewayIntentBits,
 	Collection,
 } = require("discord.js");
@@ -239,30 +238,7 @@ client.on(Events.InteractionCreate, (interaction) => {
 		console.error(error);
 	}
 
-	const channel = client.channels.cache.get("986737674574508063");
-	const server = interaction.guild.name;
-	const user = interaction.user.username;
-	const userID = interaction.user.id;
 
-	const thisembed = new EmbedBuilder()
-		.setColor("DarkVividPink")
-		.setTitle(`Command Used! `)
-		.addFields({
-			name: `Server Name`,
-			value: `${server}`,
-		})
-		.addFields({
-			name: `Command`,
-			value: `${interaction}`,
-		})
-		.addFields({
-			name: `User`,
-			value: `${user} / ${userID}`,
-		})
-		.setTimestamp()
-		.setFooter({ text: `Command Executed` });
-
-	channel.send({ embeds: [thisembed] });
 });
 
 client.on(Events.Error, (error) => {
