@@ -1,25 +1,32 @@
-const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 const page = require('discord-pagination-advanced');
 
 module.exports = {
-  data: new SlashCommandBuilder()
+    cooldown: 30,
+    mod: false,
+    data: new SlashCommandBuilder()
     .setName("help")
-    .setDescription("Lists all available commands"),
-  async execute(interaction) {
-    let str;
-    const commandFiles = fs
-      .readdirSync("./commands")
-      .filter((file) => file.endsWith(".js"));
+    .setDescription("Lists the bot's commands"),
+    async execute (interaction) {
+        await interaction.deferReply({ ephemeral: false });
 
-    for (const file of commandFiles) {
-      const command = require(`./${file}`);
-      str += `Name: ${command.data.name}, Description: ${command.data.description} \n`;
+        const option = interaction.options.getSubcommand();
+
+        if (option === "menu") {
+            const pages = [], cmds = client.commands.toJSON(), max = 10;
+
+            for (let i = 0; i < cmds.length; i++) {
+                const ind = Math.floor(i / max),
+                    string = `\`${i + 1}.\` </${cmds[i].data.name + ":" + cmds[i].id}>\n> ${cmds[i].data.description}`;
+
+                pages[ind] ? pages[ind].data.description += `\n\n${string}` : pages[ind] = new EmbedBuilder()
+                    .setTitle("📋 Help Menu")
+                    .setDescription(string)
+                    .setColor("Random")
+            }
+
+            page(interaction, pages, { deleteMessage: false })
+        }
     }
-
-    return interaction.reply({
-      content: str,
-      ephemeral: false,
-    });
-  }
 }
