@@ -1,4 +1,8 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  ChannelType,
+  EmbedBuilder,
+} = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -17,6 +21,12 @@ module.exports = {
     if (baseVerification == 2) baseVerification = "medium";
     if (baseVerification == 3) baseVerification = "high";
     if (baseVerification == 4) baseVerification = "very high";
+    var voice_channels = interaction.guild.channels.cache.filter(
+      (c) => c.type === ChannelType.GuildVoice,
+    ).size;
+    var text_channels = interaction.guild.channels.cache.filter(
+      (c) => c.type === ChannelType.GuildText,
+    ).size;
 
     const embed = new EmbedBuilder()
       .setColor("Blue")
@@ -50,13 +60,13 @@ module.exports = {
         inline: true,
       })
       .addFields({
-        name: "MFA Level",
-        value: `${interaction.guild.mfaLevel}`,
+        name: "Text Channel Number: ",
+        value: `${text_channels}`,
         inline: true,
       })
       .addFields({
-        name: "Owner: ",
-        value: `<@${interaction.guild.ownerId}>`,
+        name: "Voice Channel Number",
+        value: `${voice_channels}`,
         inline: true,
       })
       .addFields({
@@ -65,8 +75,13 @@ module.exports = {
         inline: true,
       })
       .addFields({
-        name: "Verification Level: ",
-        value: `${baseVerification}`,
+        name: "MFA Level",
+        value: `${interaction.guild.mfaLevel}`,
+        inline: true,
+      })
+      .addFields({
+        name: "Owner: ",
+        value: `<@${interaction.guild.ownerId}>`,
         inline: true,
       });
 

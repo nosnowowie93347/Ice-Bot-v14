@@ -36,7 +36,7 @@ module.exports = {
         vote_cooldown_time: 3600,
     },
     shop: {
-        work_reduce_cost: 100000, // Work reduce cost!
+        work_reduce_cost: 20000, // Work reduce cost!
         reduce_work_cooldown: 5, // Reduce 5s every buy
         max_work_cooldown_time: 29, // Max reduce work cooldown time! 30s
 
@@ -44,13 +44,13 @@ module.exports = {
         work_multiple_max: 5, // Max work multiple!
         work_multiple_cost: 10000, // Work multiple cost!
 
-        crime_reduce_cost: 100000, // Crime reduce cost!
+        crime_reduce_cost: 50000, // Crime reduce cost!
         reduce_crime_cooldown: 5, // Reduce 1s every buy
         max_crime_cooldown_time: 59, // Max reduce crime cooldown time 120 - 59 = 61s
 
         crime_multiple: 1, // Multiple x1 every buy
         crime_multiple_max: 5, // Max crime multiple!
-        crime_multiple_cost: 100000, // Crime multiple cost!
+        crime_multiple_cost: 50000, // Crime multiple cost!
 
         rob_cost: 500000,
         rob_reduce_cost: 100000, // Rob reduce cost!

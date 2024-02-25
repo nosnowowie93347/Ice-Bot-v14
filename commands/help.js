@@ -1,32 +1,36 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 
-const page = require('discord-pagination-advanced');
+const page = require("discord-pagination-advanced");
 
 module.exports = {
     cooldown: 30,
     mod: false,
     data: new SlashCommandBuilder()
-    .setName("help")
-    .setDescription("Lists the bot's commands"),
-    async execute (interaction) {
+        .setName("help")
+        .setDescription("Lists the bot's commands"),
+    async execute(interaction) {
         await interaction.deferReply({ ephemeral: false });
 
         const option = interaction.options.getSubcommand();
 
         if (option === "menu") {
-            const pages = [], cmds = client.commands.toJSON(), max = 10;
+            const pages = [],
+                cmds = client.commands.toJSON(),
+                max = 10;
 
             for (let i = 0; i < cmds.length; i++) {
                 const ind = Math.floor(i / max),
                     string = `\`${i + 1}.\` </${cmds[i].data.name + ":" + cmds[i].id}>\n> ${cmds[i].data.description}`;
 
-                pages[ind] ? pages[ind].data.description += `\n\n${string}` : pages[ind] = new EmbedBuilder()
-                    .setTitle("📋 Help Menu")
-                    .setDescription(string)
-                    .setColor("Random")
+                pages[ind]
+                    ? (pages[ind].data.description += `\n\n${string}`)
+                    : (pages[ind] = new EmbedBuilder()
+                          .setTitle("📋 Help Menu")
+                          .setDescription(string)
+                          .setColor("Random"));
             }
 
-            page(interaction, pages, { deleteMessage: false })
+            page(interaction, pages, { deleteMessage: false });
         }
-    }
-}
+    },
+};

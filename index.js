@@ -1,8 +1,16 @@
 const { token, MONGODB_URI } = require("./config.json");
 const cowsay = require("cowsay");
-const { ButtonBuilder, EmbedBuilder, ActionRowBuilder, ButtonStyle, ComponentType, ChannelType } = require('discord.js')
+const {
+	ButtonBuilder,
+	EmbedBuilder,
+	ActionRowBuilder,
+	ButtonStyle,
+	ComponentType,
+	ChannelType,
+} = require("discord.js");
 const process = require("node:process");
 const mongoose = require("mongoose");
+const modrole = require("./models/modrole");
 const {
 	Client,
 	ActivityType,
@@ -239,8 +247,6 @@ client.on(Events.InteractionCreate, (interaction) => {
 	} catch (error) {
 		console.error(error);
 	}
-
-
 });
 
 client.on(Events.Error, (error) => {

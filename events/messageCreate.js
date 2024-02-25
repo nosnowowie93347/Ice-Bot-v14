@@ -35,10 +35,10 @@ module.exports = {
 
       if (level) {
         level.xp += xpToGive;
-
         if (level.xp > calculateLevelXp(level.level)) {
           level.xp = 0;
           level.level += 1;
+
           message.channel.send(
             `${message.member} you have leveled up to **level ${level.level}**.`,
           );
