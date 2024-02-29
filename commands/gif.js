@@ -3,7 +3,6 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const superagent = require("superagent");
 
 module.exports = {
-	mod: false,
 	cooldown: 25,
 	data: new SlashCommandBuilder()
 		.setName("gif")

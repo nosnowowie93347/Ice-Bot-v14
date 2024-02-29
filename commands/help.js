@@ -4,18 +4,14 @@ const page = require("discord-pagination-advanced");
 
 module.exports = {
     cooldown: 30,
-    mod: false,
     data: new SlashCommandBuilder()
         .setName("help")
         .setDescription("Lists the bot's commands"),
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: false });
 
-        const option = interaction.options.getSubcommand();
-
-        if (option === "menu") {
             const pages = [],
-                cmds = client.commands.toJSON(),
+                cmds = interaction.client.commands.toJSON(),
                 max = 10;
 
             for (let i = 0; i < cmds.length; i++) {
@@ -32,5 +28,4 @@ module.exports = {
 
             page(interaction, pages, { deleteMessage: false });
         }
-    },
-};
+    };

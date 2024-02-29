@@ -2,6 +2,7 @@ const { token, MONGODB_URI } = require("./config.json");
 const cowsay = require("cowsay");
 const {
 	ButtonBuilder,
+	PermissionFlagsBits,
 	EmbedBuilder,
 	ActionRowBuilder,
 	ButtonStyle,
@@ -10,7 +11,6 @@ const {
 } = require("discord.js");
 const process = require("node:process");
 const mongoose = require("mongoose");
-const modrole = require("./models/modrole");
 const {
 	Client,
 	ActivityType,
@@ -154,7 +154,11 @@ client.on(Events.GuildBanAdd, (ban) => {
 		content: `You have been banned from ${ban.guild} for ${ban.reason}.\nShould have behaved yourself, you silly goose!`,
 	});
 });
-client.on(Events.InteractionCreate, (interaction) => {
+client.on(Events.InteractionCreate, async (interaction) => {
+	const blacklist = require('./models/blacklist')
+	const data = await blacklist.findOne({ User: interaction.user.id })
+
+	if (data) return await interaction.reply(`You have been blacklisted! You cannot use this bot!`);
 	if (!interaction.isModalSubmit) return;
 	if (interaction.customId === "bugreport") {
 		const command = interaction.fields.getTextInputValue("command");
@@ -200,26 +204,7 @@ client.on(Events.InteractionCreate, (interaction) => {
 	if (!cooldowns.has(command.data.name)) {
 		cooldowns.set(command.data.name, new Collection());
 	}
-	//modrole
-	if (command.mod) {
-		var modRoleData = modrole.find({ Guild: interaction.guild.id });
-		if (modRoleData.length > 0) {
-			var check;
-			modRoleData.forEach((value) => {
-				const mRoles = interaction.member.roles.cache.map(
-					(role) => role.id,
-				);
-				mRoles.forEach((value) => {
-					if (role == value.Role) check = true;
-				});
-			});
 
-			if (!check)
-				return interaction.reply(
-					`Only **moderators** can use this command.`,
-				);
-		}
-	}
 
 	const now = Date.now();
 	const timestamps = cooldowns.get(command.data.name);
@@ -249,9 +234,9 @@ client.on(Events.InteractionCreate, (interaction) => {
 	}
 });
 
-client.on(Events.Error, (error) => {
-	console.error(`An error has occured: ${error}`);
-});
+// client.on(Events.Error, (error) => {
+// 	console.error(`An error has occured: ${error}`);
+// });
 client.on(Events.GuildCreate, (guild) => {
 	// This event triggers when the bot joins a guild.
 	console.log(

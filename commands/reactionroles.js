@@ -7,10 +7,10 @@ const {
 const reaction = require("../models/reactionrs");
 
 module.exports = {
-	mod: true,
 	data: new SlashCommandBuilder()
 		.setName("reaction-roles")
 		.setDescription("Manage reaction roles system")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
 		.addSubcommand((command) =>
 			command
 				.setName("add")

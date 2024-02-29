@@ -7,7 +7,6 @@ const {
 const counting = require("../models/countingschema");
 
 module.exports = {
-	mod: true,
 	cooldown: 20,
 	data: new SlashCommandBuilder()
 		.setName("counting")

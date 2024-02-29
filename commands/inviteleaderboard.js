@@ -2,7 +2,6 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
 
 module.exports = {
 	cooldown: 20,
-	mod: false,
 	data: new SlashCommandBuilder()
 	.setName('invitelb')
 	.setDescription(`Get the total --all time-- leaderboard for invites`),

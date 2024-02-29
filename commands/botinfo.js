@@ -8,7 +8,6 @@ module.exports = {
         .setName("botinfo")
         .setDMPermission(false)
         .setDescription("Info about the bot"),
-    name: "botinfo",
     async execute(interaction) {
         const client = interaction.client;
         var milliseconds = parseInt((client.uptime % 1000) / 100),

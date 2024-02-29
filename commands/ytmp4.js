@@ -9,7 +9,6 @@ const {
 const axios = require("axios");
 
 module.exports = {
-	mod: false,
 	cooldown: 20,
 	data: new SlashCommandBuilder()
 		.setName("ytmp4")

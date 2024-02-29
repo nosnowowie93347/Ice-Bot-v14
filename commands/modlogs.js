@@ -9,10 +9,10 @@ const {
 const modSchema = require("../models/modSchema");
 
 module.exports = {
-  mod: true,
   data: new SlashCommandBuilder()
     .setName("modlogs")
     .setDescription("Setup or edit the modlogs.")
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addSubcommand((subcommand) =>
       subcommand
         .setName("setup")

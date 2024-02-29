@@ -3,7 +3,6 @@ const inbox = require("../models/inbox");
 
 module.exports = {
 	cooldown: 20,
-	mod: false,
 	data: new SlashCommandBuilder()
 		.setName("inbox")
 		.setDescription("Get your inbox")
