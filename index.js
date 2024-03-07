@@ -1,17 +1,16 @@
 const { token, MONGODB_URI } = require("./config.json");
 const cowsay = require("cowsay");
+const process = require("node:process");
+const mongoose = require("mongoose");
 const {
 	ButtonBuilder,
 	PermissionFlagsBits,
 	EmbedBuilder,
+	AuditLogEvent,
 	ActionRowBuilder,
 	ButtonStyle,
 	ComponentType,
 	ChannelType,
-} = require("discord.js");
-const process = require("node:process");
-const mongoose = require("mongoose");
-const {
 	Client,
 	ActivityType,
 	Events,
@@ -133,6 +132,70 @@ client.on(Events.MessageCreate, async (message) => {
 		}
 	}
 });
+client.on(Events.ChannelDelete, async channel => {
+	channel.guild.fetchAuditLogs({
+		type: AuditLogEvent.ChannelDelete,
+	})
+	.then(async audit => {
+		const { executor } = audit.entries.first()
+
+		const name = channel.name;
+		const id = channel.id;
+		let type = channel.type;
+
+		if (type == 0) type = "Text";
+		if (type == 2) type = "Voice";
+		if (type == 13) type = 'Stage';
+		if (type == 5) type = "Category";
+		const logchannel = channel.guild.channels.cache.find(channel => channel.name === 'logs' || channel.name === 'modlogs');
+		let owner = await channel.guild.fetchOwner();
+		const embed = new EmbedBuilder()
+		
+		.setAuthor({ name: `${owner.user.username}` })
+		.setColor("#dc143c")
+		.setTitle(`🛠 Channel Deleted!`)
+		.setTimestamp()
+		.addFields({ name: "Channel Name", value: `\`${name}\``, inline: false })
+		.addFields({ name: "Channel Type", value: `\`${type}\``, inline: false })
+		.addFields({ name: "Channel ID", value: `\`${id}\``, inline: false })
+		.addFields({ name: "Deleted By", value: `\`${executor.tag}\``, inline: false })
+		.setFooter({ text: `⚙ Mod Logging System` })
+
+		logchannel.send({ embeds: [embed] })
+	})
+});
+client.on(Events.ChannelCreate, async channel => {
+	channel.guild.fetchAuditLogs({
+		type: AuditLogEvent.ChannelCreate,
+	})
+	.then(async audit => {
+		const { executor } = audit.entries.first()
+
+		const name = channel.name;
+		const id = channel.id;
+		let type = channel.type;
+
+		if (type == 0) type = "Text";
+		if (type == 2) type = "Voice";
+		if (type == 13) type = 'Stage';
+		if (type == 5) type = "Category";
+		const logchannel = channel.guild.channels.cache.find(channel => channel.name === 'logs' || channel.name === 'modlogs');
+		let owner = await channel.guild.fetchOwner();
+		const embed = new EmbedBuilder()
+		
+		.setAuthor({ name: `${owner.user.username}` })
+		.setColor("#dc143c")
+		.setTitle(`🛠 Channel Created!`)
+		.setTimestamp()
+		.addFields({ name: "Channel Name", value: `\`${name}\``, inline: false })
+		.addFields({ name: "Channel Type", value: `\`${type}\``, inline: false })
+		.addFields({ name: "Channel ID", value: `\`${id}\``, inline: false })
+		.addFields({ name: "Created By", value: `\`${executor.tag}\``, inline: false })
+		.setFooter({ text: `⚙ Mod Logging System` })
+
+		logchannel.send({ embeds: [embed] })
+	})
+});
 client.on(Events.GuildBanAdd, (ban) => {
 	const embed = new EmbedBuilder()
 		.setTitle("<:banhammer:1207101783340621877> Member Banned.")
@@ -234,9 +297,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	}
 });
 
-// client.on(Events.Error, (error) => {
-// 	console.error(`An error has occured: ${error}`);
-// });
+client.on(Events.Error, (error) => {
+	console.error(`An error has occured: ${error}`);
+});
 client.on(Events.GuildCreate, (guild) => {
 	// This event triggers when the bot joins a guild.
 	console.log(

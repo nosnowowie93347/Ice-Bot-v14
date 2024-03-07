@@ -30,7 +30,9 @@ module.exports = {
 			.setColor("#FF009C")
 			.setTitle(`⭐ Message Deletion Service`)
 			.setDescription(`✔ Deleted ${amount} messages`);
-		await interaction.channel.bulkDelete(amount, true);
+		await interaction.channel.bulkDelete(amount, true).catch(err => {
+			console.log(err.toString());
+		});
 
 		const button = new ActionRowBuilder().addComponents(
 			new ButtonBuilder()
