@@ -1,5 +1,6 @@
 const { token, MONGODB_URI } = require("./config.json");
 const cowsay = require("cowsay");
+const chalk = require('chalk');
 const process = require("node:process");
 const mongoose = require("mongoose");
 const {
@@ -49,7 +50,7 @@ for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);
 	const event = require(filePath);
 	if (event.once) {
-		client.once(event.name, (...arge) => event.execute(...args));
+		client.once(event.name, (...args) => event.execute(...args));
 	} else {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
@@ -90,7 +91,8 @@ client.once(Events.ClientReady, (c) => {
 	console.log(
 		cowsay.say({
 			text: `Logged in as ${c.user.tag}`,
-			f: "dragon-and-cow",
+			e: "oO",
+			T: "U ",
 		}),
 	);
 
@@ -100,10 +102,10 @@ client.once(Events.ClientReady, (c) => {
 	}, 25000);
 });
 process.on("unhandledRejection", async (reason, promise) => {
-	console.log("Error!: Unhandled Rejection at:", promise, "reason:", reason);
+	console.log(chalk.redBright("Error!: Unhandled Rejection at:"), promise, "reason:", reason);
 });
 process.on("uncaughtException", (err) => {
-	console.log("Uncaught exception: ", err);
+	console.log(chalk.redBright("Uncaught exception: "), err);
 });
 const counting = require("./models/countingschema");
 client.on(Events.MessageCreate, async (message) => {
@@ -289,22 +291,78 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 	timestamps.set(interaction.user.id, now);
 	setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
+	if (!command) return;
+	//error handle
 	try {
-		if (interaction.replied) return;
-		command.execute(interaction);
+		await command.execute(interaction);
 	} catch (error) {
-		console.error(error);
+		console.log(error);
+		await interaction.reply({
+			content: `There was an error while executing this command`,
+			ephemeral: true
+		}).catch(err => {});
+
+		//error flag system
+		var guild = interaction.guild;
+		var member = interaction.member;
+		var channel = interaction.channel;
+		var errorTime = `<t:${Math.floor(Date.now() / 1000)}:R>`;
+
+		const sendChannel = await client.channels.fetch('986737674574508063')
+		const embed = new EmbedBuilder()
+		.setColor("#ff00ff")
+		.setDescription(`An error has been detected.`)
+		.addFields({ name: `Error Command`, value: `\`${interaction.commandName}\``})
+		.addFields({ name: `Error Stack`, value: `\`${error.stack}\``})
+		.addFields({ name: `Error Message`, value: `\`${error.message}\``})
+		.addFields({ name: `Error Timestamp`, value: `${errorTime}`})
+		.setFooter({ text: `Error Logging System` })
+		.setTimestamp()
+
+		const button = new ButtonBuilder()
+		.setCustomId('fetchErrorUserInfo')
+		.setLabel(`📩 Fetch User Info`)
+		.setStyle(ButtonStyle.Danger)
+
+		const row = new ActionRowBuilder()
+		.addComponents(button)
+
+		const msg = await sendChannel.send({ embeds: [embed], components: [row] }).catch(err => {});
+
+		var time = 300000;
+		const collector = await msg.createMessageComponentCollector({
+			componentType: ComponentType.Button,
+			time
+		});
+
+		collector.on('collect', async i => {
+			if (i.customId == 'fetchErrorUserInfo') {
+				const userEmbed = new EmbedBuilder()
+				.setColor("#ff00ff")
+				.setDescription("This user has triggered an error")
+				.addFields({ name: `Error Guild`, value: `\`${guild.name} (${guild.id})\``})
+				.addFields({ name: `Error User`, value: `\`${member.user.username} (${member.id})\``})
+				.addFields({ name: `Error Command Channel`, value: `\`${channel.name} (${channel.id})\``})
+				.setTimestamp()
+
+				await i.reply({ embeds: [userEmbed], ephemeral: true })
+			}
+		})
+
+		collector.on('end', async () => {
+			button.setDisabled(true)
+			embed.setFooter({ text: 'Error Logging System - your user button is now expired' })
+			await msg.edit({ embeds: [embed], components: [row] })
+		})
 	}
 });
 
 client.on(Events.Error, (error) => {
-	console.error(`An error has occured: ${error}`);
+	console.error(chalk.redBright(`An error has occured: `), `${error}`);
 });
 client.on(Events.GuildCreate, (guild) => {
 	// This event triggers when the bot joins a guild.
-	console.log(
-		`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`,
-	);
+	console.log(chalk.blue(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`));
 });
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
 	if (!reaction.message.guildId) return;
