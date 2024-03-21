@@ -30,7 +30,7 @@
     "emoji-aware": "^3.1.0",
     "google-play-scraper": "^9.2.0",
     "got": "^11.8.5",
-    "images-scraper": "^6.4.5",
+    "images-scraper": "^6.4.6",
     "imdb-api": "^4.4.1",
     "libnpmsearch": "^7.0.1",
     "moment-duration-format": "^2.3.2",
