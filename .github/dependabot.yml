@@ -14,5 +14,6 @@ updates:
       - dependency-name: "canvacord"
       - dependency-name: "delay"
       - dependency-name: "nekos.life"
+      - dependency-name: "mongoose"
       - dependency-name: "chalk"
       - dependency-name: "google-play-scraper"
