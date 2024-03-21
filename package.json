@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@iamtraction/google-translate": "^2.0.1",
-    "axios": ">=1.6.7",
+    "axios": ">=1.6.8",
     "canvacord": "^5.4.10",
     "canvas": "^2.11.2",
     "chalk": "^4.1.2",
