@@ -56,9 +56,26 @@ for (const file of eventFiles) {
 	}
 }
 
-client.commands = getCommands("./commands");
+client.commands = new Collection();
 client.cooldowns = new Collection();
 
+const foldersPath = path.join(__dirname, 'commands');
+const commandFolders = fs.readdirSync(foldersPath);
+
+for (const folder of commandFolders) {
+	const commandsPath = path.join(foldersPath, folder);
+	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	for (const file of commandFiles) {
+		const filePath = path.join(commandsPath, file);
+		const command = require(filePath);
+		// Set a new item in the Collection with the key as the command name and the value as the exported module
+		if ('data' in command && 'execute' in command) {
+			client.commands.set(command.data.name, command);
+		} else {
+			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		}
+	}
+}
 client.once(Events.ClientReady, (c) => {
 	mongoose.set("strictQuery", false);
 	mongoose.connect(MONGODB_URI);
@@ -425,31 +442,3 @@ client.on(Events.MessageUpdate, async (oldMessage, newMessage) => {
 	}
 });
 client.login(token);
-function getFiles(dir) {
-	const files = fs.readdirSync(dir, {
-		withFileTypes: true,
-	});
-	let commandFiles = [];
-
-	for (const file of files) {
-		if (file.isDirectory()) {
-			commandFiles = [
-				...commandFiles,
-				...getFiles(`${dir}/${file.name}`),
-			];
-		} else if (file.name.endsWith(".js")) {
-			commandFiles.push(`${dir}/${file.name}`);
-		}
-	}
-	return commandFiles;
-}
-
-function getCommands(dir) {
-	let commands = new Collection();
-	const commandFiles = getFiles(dir);
-	for (const commandFile of commandFiles) {
-		const command = require(commandFile);
-		commands.set(command.data.toJSON().name, command);
-	}
-	return commands;
-}

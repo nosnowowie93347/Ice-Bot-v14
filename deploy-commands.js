@@ -1,34 +1,28 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { REST } = require("@discordjs/rest");
-const { Routes, PermissionFlagsBits } = require("discord.js");
+const { Routes, PermissionFlagsBits, SlashCommandBuilder } = require("discord.js");
 const { clientId, guildId, token } = require("./config.json");
 
-function getFiles(dir) {
-	const files = fs.readdirSync(dir, {
-		withFileTypes: true,
-	});
-	let commandFiles = [];
+const commands = [];
+// Grab all the command folders from the commands directory you created earlier
+const foldersPath = path.join(__dirname, 'commands');
+const commandFolders = fs.readdirSync(foldersPath);
 
-	for (const file of files) {
-		if (file.isDirectory()) {
-			commandFiles = [
-				...commandFiles,
-				...getFiles(`${dir}/${file.name}`),
-			];
-		} else if (file.name.endsWith(".js")) {
-			commandFiles.push(`${dir}/${file.name}`);
+for (const folder of commandFolders) {
+	// Grab all the command files from the commands directory you created earlier
+	const commandsPath = path.join(foldersPath, folder);
+	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	// Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
+	for (const file of commandFiles) {
+		const filePath = path.join(commandsPath, file);
+		const command = require(filePath);
+		if (command.data instanceof SlashCommandBuilder) {
+			commands.push(command.data.toJSON());
+		} else {
+			commands.push(command.data);
 		}
 	}
-	return commandFiles;
-}
-
-let commands = [];
-const commandFiles = getFiles("./commands");
-
-for (const file of commandFiles) {
-	const command = require(file);
-	commands.push(command.data.toJSON());
 }
 
 const rest = new REST({ version: "10" }).setToken(token);
