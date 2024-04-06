@@ -22,6 +22,8 @@ for (const folder of commandFolders) {
 		} else {
 			commands.push(command.data);
 		}
+
+		
 	}
 }
 
