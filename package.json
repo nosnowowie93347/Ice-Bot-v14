@@ -33,7 +33,7 @@
     "got": "^11.8.5",
     "images-scraper": "^6.4.6",
     "imdb-api": "^4.4.1",
-    "libnpmsearch": "^7.0.1",
+    "libnpmsearch": "^7.0.2",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.45",
     "mongoose": "^8.2.0",
