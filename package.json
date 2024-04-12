@@ -42,7 +42,7 @@
     "node-superfetch": "^0.3.3",
     "os-utils": "^0.0.14",
     "pm2": "^5.3.1",
-    "puppeteer": "^22.6.3",
+    "puppeteer": "^22.6.4",
     "superagent": "^8.1.2"
   },
   "devDependencies": {
