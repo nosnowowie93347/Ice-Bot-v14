@@ -288,6 +288,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	}
 
 
+
 	const now = Date.now();
 	const timestamps = cooldowns.get(command.data.name);
 	const defaultCooldownDuration = 3;
@@ -309,6 +310,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	timestamps.set(interaction.user.id, now);
 	setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 	if (!command) return;
+	//owner only
+	if (command.owner == true ) {
+		if (interaction.user.id !== `466778567905116170`) return await interaction.reply({ content: `⚠ This command is owner-only!` });
+	}
 	//error handle
 	try {
 		await command.execute(interaction);
