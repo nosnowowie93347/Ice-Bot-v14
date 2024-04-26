@@ -43,7 +43,7 @@
     "os-utils": "^0.0.14",
     "pm2": "^5.3.1",
     "puppeteer": "^22.7.1",
-    "superagent": "^8.1.2"
+    "superagent": "^9.0.1"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
