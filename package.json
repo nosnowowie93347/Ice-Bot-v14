@@ -14,7 +14,7 @@
   "dependencies": {
     "@iamtraction/google-translate": "^2.0.1",
     "aki-api": "^7.0.1",
-    "axios": ">=1.6.8",
+    "axios": ">=1.7.2",
     "canvacord": "^5.4.10",
     "canvas": "^2.11.2",
     "chalk": "^4.1.2",
@@ -33,7 +33,7 @@
     "got": "^11.8.5",
     "images-scraper": "^6.4.6",
     "imdb-api": "^4.4.1",
-    "libnpmsearch": "^7.0.4",
+    "libnpmsearch": "^7.0.6",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.45",
     "mongoose": "^8.2.0",
@@ -41,8 +41,8 @@
     "nekos.life": "^3.0.0",
     "node-superfetch": "^0.3.4",
     "os-utils": "^0.0.14",
-    "pm2": "^5.3.1",
-    "puppeteer": "^22.7.1",
+    "pm2": "^5.4.0",
+    "puppeteer": "^22.11.1",
     "superagent": "^9.0.2"
   },
   "devDependencies": {

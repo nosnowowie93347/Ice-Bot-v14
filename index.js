@@ -287,8 +287,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		cooldowns.set(command.data.name, new Collection());
 	}
 
-
-
 	const now = Date.now();
 	const timestamps = cooldowns.get(command.data.name);
 	const defaultCooldownDuration = 3;

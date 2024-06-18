@@ -27,7 +27,7 @@ module.exports = {
     var text_channels = interaction.guild.channels.cache.filter(
       (c) => c.type === ChannelType.GuildText,
     ).size;
-
+    var animatedemoijis = interaction.guild.emojis.cache.filter((e) => e.animated == true).size;
     const embed = new EmbedBuilder()
       .setColor("Blue")
       .setThumbnail(icon)
@@ -70,11 +70,6 @@ module.exports = {
         inline: true,
       })
       .addFields({
-        name: "Emoji Number: ",
-        value: `${emojis}`,
-        inline: true,
-      })
-      .addFields({
         name: "MFA Level",
         value: `${interaction.guild.mfaLevel}`,
         inline: true,
@@ -83,7 +78,17 @@ module.exports = {
         name: "Owner: ",
         value: `<@${interaction.guild.ownerId}>`,
         inline: true,
-      });
+      })
+      .addFields({
+        name: "Emoji Number: ",
+        value: `${emojis}`,
+        inline: true,
+      })
+      .addFields({
+        name: "Animated: ",
+        value: `${animatedemoijis}`,
+        inline: true,
+      })
 
     interaction.reply({ embeds: [embed] });
   },

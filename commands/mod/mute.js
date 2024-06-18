@@ -70,6 +70,7 @@ module.exports = {
       await user.timeout(convertedTime, reason);
 
       interaction.reply({ embeds: [successEmbed], ephemeral: true });
+      
     } catch (err) {
       console.log(err);
     }
