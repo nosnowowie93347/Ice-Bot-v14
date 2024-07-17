@@ -11,9 +11,11 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: "got"
+      - dependency-name: "braces"
       - dependency-name: "canvacord"
       - dependency-name: "delay"
       - dependency-name: "nekos.life"
       - dependency-name: "mongoose"
       - dependency-name: "chalk"
+      - dependency-name: "discord.js"
       - dependency-name: "google-play-scraper"
