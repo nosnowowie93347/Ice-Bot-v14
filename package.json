@@ -46,7 +46,7 @@
     "superagent": "^9.0.2"
   },
   "devDependencies": {
-    "prettier": "^3.2.5"
+    "prettier": "^3.3.3"
   },
   "repository": {
     "type": "git",
