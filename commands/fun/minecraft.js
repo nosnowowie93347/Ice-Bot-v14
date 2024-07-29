@@ -1,84 +1,51 @@
-const {
-  EmbedBuilder,
-  SlashCommandBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ActionRowBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
-  cooldown: 20,
+  cooldown: 30,
   data: new SlashCommandBuilder()
-    .setName("minecraft-server")
-    .setDescription("Get info on a Minecraft server")
-    .addStringOption((option) =>
-      option
-        .setName("ip")
-        .setDescription("The server to search for")
-        .setRequired(true)
-    ),
-  async execute(interaction) {
-    const ip = interaction.options.getString("ip");
-    var msg;
+    .setName(`minecraft-server`) 
+    .setDescription(`Tells A Minecraft Server Stats`)
+    .addStringOption(option => option.setName(`ip`).setDescription(`The IP address of the server.`).setRequired(true)),
+  async execute(interaction, client) {
 
-    async function sendMessage(message, button, updated) {
+    interaction.deferReply()
+
+    const ip = interaction.options.getString(`ip`);
+    const url = `https://api.mcsrvstat.us/1/${ip}`;
+
+    const errEmbed = new EmbedBuilder()
+    .setColor("Red")
+    .setTitle("Error: Unable to access server status.")
+    .setDescription(`The server is either offline or its a bedrock server or the IP provided is wrong.`)
+
+    try {
+      const data = await fetch(url).then((response) => response.json());
+      const serverip = data.hostname;
+      const realip = data.ip;
+      const port = data.port;
+      const version = data.version;
+      const onlineplayers = data.players.online;
+      const maxplayers = data.players.max;
+      const motd = data.motd.clean     
+      
       const embed = new EmbedBuilder()
-        .setColor("Random")
-        .setTimestamp()
-        .setDescription(message);
-
-      if (button) {
-        const button = new ActionRowBuilder().addComponents(
-          new ButtonBuilder()
-            .setCustomId("mcserverRefresh")
-            .setLabel("Refresh Stats")
-            .setStyle(ButtonStyle.Danger)
+        .setColor(`Aqua`)
+        .addFields(
+          { name: "Server", value: serverip },
+          { name: "IP Address", value: `${realip}`, inline: true},
+          { name: "Port", value: `${port}`, inline: true},
+          { name: "Version", value: version.toString() },
+          { name: "MOTD", value: motd.toString()}, 
+          {
+            name: "Online Players",
+            value: onlineplayers.toString(),
+            inline: true,
+          },
+          { name: "Max Players", value: maxplayers.toString(), inline: true }
         );
-
-        if (updated) {
-          await interaction.editReply({
-            embeds: [embed],
-            components: [button],
-          });
-          await updated.reply({
-            content: `I have updated your stats.`,
-            ephemeral: true,
-          });
-        } else {
-          msg = await interaction.reply({
-            embeds: [embed],
-            components: [button],
-            ephemeral: true,
-          });
-        }
-      } else {
-        await interaction.reply({ embeds: [embed], ephemeral: true });
+        await interaction.editReply({ embeds: [embed]});
+      } catch (error) {
+        interaction.editReply({embeds: [errEmbed], ephemeral: true});
       }
-      console.log("test");
-    }
-
-    var getData = await fetch(`https://mcapi.us/server/status?ip=${ip}`);
-    var response = await getData.json();
-
-    if (response.status == "error") {
-      await sendMessage(`⚠️ \`${ip}\` is either offline, or doesn't exist.`);
-    }
-    if (response.status == "success") {
-      await sendMessage(
-        `🌎 **Minecraft Server Stats:** \n\nOnline: ${response.online}\nName: ${response.server.name}\nIP: ${ip.toLowerCase()}\nPlayer Max: ${response.players.max}\nCurrent Players: ${response.players.now}`
-      );
-      const collector = msg.createMessageComponentCollector();
-      collector.on("collect", async (i) => {
-        if (i.customId == "mcserverRefresh") {
-          var updatedData = await fetch(
-            `https://mcapi.us/server/status?ip=${ip}`
-          );
-          var response = await updatedData.json();
-          await sendMessage(
-            `🌎 **Minecraft Server Stats:** \n\nOnline: ${response.online}\nName: ${response.server.name}\nIP: ${ip.toLowerCase()}\nPlayer Max: ${response.players.max}\nCurrent Players: ${response.players.now}`
-          );
-        }
-      });
-    }
   },
 };

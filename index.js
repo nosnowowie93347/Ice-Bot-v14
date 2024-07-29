@@ -1,8 +1,9 @@
 const { token, MONGODB_URI } = require("./config.json");
 const cowsay = require("cowsay");
-const chalk = require('chalk');
+const chalk = require("chalk");
 const process = require("node:process");
 const mongoose = require("mongoose");
+
 const {
 	ButtonBuilder,
 	PermissionFlagsBits,
@@ -31,6 +32,7 @@ const client = new Client({
 		[GatewayIntentBits.GuildInvites] |
 		[GatewayIntentBits.GuildBans] |
 		[GatewayIntentBits.GuildModeration] |
+		[GatewayIntentBits.GuildVoiceStates] |
 		[GatewayIntentBits.DirectMessages] |
 		[GatewayIntentBits.GuildMembers] |
 		[GatewayIntentBits.GuildEmojisAndStickers] |
@@ -59,20 +61,24 @@ for (const file of eventFiles) {
 client.commands = new Collection();
 client.cooldowns = new Collection();
 
-const foldersPath = path.join(__dirname, 'commands');
+const foldersPath = path.join(__dirname, "commands");
 const commandFolders = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
-	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	const commandFiles = fs
+		.readdirSync(commandsPath)
+		.filter((file) => file.endsWith(".js"));
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
 		// Set a new item in the Collection with the key as the command name and the value as the exported module
-		if ('data' in command && 'execute' in command) {
+		if ("data" in command && "execute" in command) {
 			client.commands.set(command.data.name, command);
 		} else {
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+			console.log(
+				`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`,
+			);
 		}
 	}
 }
@@ -119,7 +125,12 @@ client.once(Events.ClientReady, (c) => {
 	}, 25000);
 });
 process.on("unhandledRejection", async (reason, promise) => {
-	console.log(chalk.redBright("Error!: Unhandled Rejection at:"), promise, "reason:", reason);
+	console.log(
+		chalk.redBright("Error!: Unhandled Rejection at:"),
+		promise,
+		"reason:",
+		reason,
+	);
 });
 process.on("uncaughtException", (err) => {
 	console.log(chalk.redBright("Uncaught exception: "), err);
@@ -151,69 +162,109 @@ client.on(Events.MessageCreate, async (message) => {
 		}
 	}
 });
-client.on(Events.ChannelDelete, async channel => {
-	channel.guild.fetchAuditLogs({
-		type: AuditLogEvent.ChannelDelete,
-	})
-	.then(async audit => {
-		const { executor } = audit.entries.first()
+client.on(Events.ChannelDelete, async (channel) => {
+	channel.guild
+		.fetchAuditLogs({
+			type: AuditLogEvent.ChannelDelete,
+		})
+		.then(async (audit) => {
+			const { executor } = audit.entries.first();
 
-		const name = channel.name;
-		const id = channel.id;
-		let type = channel.type;
+			const name = channel.name;
+			const id = channel.id;
+			let type = channel.type;
 
-		if (type == 0) type = "Text";
-		if (type == 2) type = "Voice";
-		if (type == 13) type = 'Stage';
-		if (type == 5) type = "Category";
-		const logchannel = channel.guild.channels.cache.find(channel => channel.name === 'logs' || channel.name === 'modlogs');
-		let owner = await channel.guild.fetchOwner();
-		const embed = new EmbedBuilder()
-		
-		.setAuthor({ name: `${owner.user.username}` })
-		.setColor("#dc143c")
-		.setTitle(`🛠 Channel Deleted!`)
-		.setTimestamp()
-		.addFields({ name: "Channel Name", value: `\`${name}\``, inline: false })
-		.addFields({ name: "Channel Type", value: `\`${type}\``, inline: false })
-		.addFields({ name: "Channel ID", value: `\`${id}\``, inline: false })
-		.addFields({ name: "Deleted By", value: `\`${executor.tag}\``, inline: false })
-		.setFooter({ text: `⚙ Mod Logging System` })
+			if (type == 0) type = "Text";
+			if (type == 2) type = "Voice";
+			if (type == 13) type = "Stage";
+			if (type == 5) type = "Category";
+			const logchannel = channel.guild.channels.cache.find(
+				(channel) =>
+					channel.name === "logs" || channel.name === "modlogs",
+			);
+			let owner = await channel.guild.fetchOwner();
+			const embed = new EmbedBuilder()
 
-		logchannel.send({ embeds: [embed] })
-	})
+				.setAuthor({ name: `${owner.user.username}` })
+				.setColor("#dc143c")
+				.setTitle(`🛠 Channel Deleted!`)
+				.setTimestamp()
+				.addFields({
+					name: "Channel Name",
+					value: `\`${name}\``,
+					inline: false,
+				})
+				.addFields({
+					name: "Channel Type",
+					value: `\`${type}\``,
+					inline: false,
+				})
+				.addFields({
+					name: "Channel ID",
+					value: `\`${id}\``,
+					inline: false,
+				})
+				.addFields({
+					name: "Deleted By",
+					value: `\`${executor.tag}\``,
+					inline: false,
+				})
+				.setFooter({ text: `⚙ Mod Logging System` });
+
+			logchannel.send({ embeds: [embed] });
+		});
 });
-client.on(Events.ChannelCreate, async channel => {
-	channel.guild.fetchAuditLogs({
-		type: AuditLogEvent.ChannelCreate,
-	})
-	.then(async audit => {
-		const { executor } = audit.entries.first()
+client.on(Events.ChannelCreate, async (channel) => {
+	channel.guild
+		.fetchAuditLogs({
+			type: AuditLogEvent.ChannelCreate,
+		})
+		.then(async (audit) => {
+			const { executor } = audit.entries.first();
 
-		const name = channel.name;
-		const id = channel.id;
-		let type = channel.type;
+			const name = channel.name;
+			const id = channel.id;
+			let type = channel.type;
 
-		if (type == 0) type = "Text";
-		if (type == 2) type = "Voice";
-		if (type == 13) type = 'Stage';
-		if (type == 5) type = "Category";
-		const logchannel = channel.guild.channels.cache.find(channel => channel.name === 'logs' || channel.name === 'modlogs');
-		let owner = await channel.guild.fetchOwner();
-		const embed = new EmbedBuilder()
-		
-		.setAuthor({ name: `${owner.user.username}` })
-		.setColor("#dc143c")
-		.setTitle(`🛠 Channel Created!`)
-		.setTimestamp()
-		.addFields({ name: "Channel Name", value: `\`${name}\``, inline: false })
-		.addFields({ name: "Channel Type", value: `\`${type}\``, inline: false })
-		.addFields({ name: "Channel ID", value: `\`${id}\``, inline: false })
-		.addFields({ name: "Created By", value: `\`${executor.tag}\``, inline: false })
-		.setFooter({ text: `⚙ Mod Logging System` })
+			if (type == 0) type = "Text";
+			if (type == 2) type = "Voice";
+			if (type == 13) type = "Stage";
+			if (type == 5) type = "Category";
+			const logchannel = channel.guild.channels.cache.find(
+				(channel) =>
+					channel.name === "logs" || channel.name === "modlogs",
+			);
+			let owner = await channel.guild.fetchOwner();
+			const embed = new EmbedBuilder()
 
-		logchannel.send({ embeds: [embed] })
-	})
+				.setAuthor({ name: `${owner.user.username}` })
+				.setColor("#dc143c")
+				.setTitle(`🛠 Channel Created!`)
+				.setTimestamp()
+				.addFields({
+					name: "Channel Name",
+					value: `\`${name}\``,
+					inline: false,
+				})
+				.addFields({
+					name: "Channel Type",
+					value: `\`${type}\``,
+					inline: false,
+				})
+				.addFields({
+					name: "Channel ID",
+					value: `\`${id}\``,
+					inline: false,
+				})
+				.addFields({
+					name: "Created By",
+					value: `\`${executor.tag}\``,
+					inline: false,
+				})
+				.setFooter({ text: `⚙ Mod Logging System` });
+
+			logchannel.send({ embeds: [embed] });
+		});
 });
 client.on(Events.GuildBanAdd, (ban) => {
 	const embed = new EmbedBuilder()
@@ -237,10 +288,13 @@ client.on(Events.GuildBanAdd, (ban) => {
 	});
 });
 client.on(Events.InteractionCreate, async (interaction) => {
-	const blacklist = require('./models/blacklist')
-	const data = await blacklist.findOne({ User: interaction.user.id })
+	const blacklist = require("./models/blacklist");
+	const data = await blacklist.findOne({ User: interaction.user.id });
 
-	if (data) return await interaction.reply(`You have been blacklisted! You cannot use this bot!`);
+	if (data)
+		return await interaction.reply(
+			`You have been blacklisted! You cannot use this bot!`,
+		);
 	if (!interaction.isModalSubmit) return;
 	if (interaction.customId === "bugreport") {
 		const command = interaction.fields.getTextInputValue("command");
@@ -309,18 +363,23 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 	if (!command) return;
 	//owner only
-	if (command.owner == true ) {
-		if (interaction.user.id !== `466778567905116170`) return await interaction.reply({ content: `⚠ This command is owner-only!` });
+	if (command.owner == true) {
+		if (interaction.user.id !== `466778567905116170`)
+			return await interaction.reply({
+				content: `⚠ This command is owner-only!`,
+			});
 	}
 	//error handle
 	try {
 		await command.execute(interaction);
 	} catch (error) {
 		console.log(error);
-		await interaction.reply({
-			content: `There was an error while executing this command`,
-			ephemeral: true
-		}).catch(err => {});
+		await interaction
+			.reply({
+				content: `There was an error while executing this command`,
+				ephemeral: true,
+			})
+			.catch((err) => {});
 
 		//error flag system
 		var guild = interaction.guild;
@@ -328,52 +387,67 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		var channel = interaction.channel;
 		var errorTime = `<t:${Math.floor(Date.now() / 1000)}:R>`;
 
-		const sendChannel = await client.channels.fetch('986737674574508063')
+		const sendChannel = await client.channels.fetch("986737674574508063");
 		const embed = new EmbedBuilder()
-		.setColor("#ff00ff")
-		.setDescription(`An error has been detected.`)
-		.addFields({ name: `Error Command`, value: `\`${interaction.commandName}\``})
-		.addFields({ name: `Error Stack`, value: `\`${error.stack}\``})
-		.addFields({ name: `Error Message`, value: `\`${error.message}\``})
-		.addFields({ name: `Error Timestamp`, value: `${errorTime}`})
-		.setFooter({ text: `Error Logging System` })
-		.setTimestamp()
+			.setColor("#ff00ff")
+			.setDescription(`An error has been detected.`)
+			.addFields({
+				name: `Error Command`,
+				value: `\`${interaction.commandName}\``,
+			})
+			.addFields({ name: `Error Stack`, value: `\`${error.stack}\`` })
+			.addFields({ name: `Error Message`, value: `\`${error.message}\`` })
+			.addFields({ name: `Error Timestamp`, value: `${errorTime}` })
+			.setFooter({ text: `Error Logging System` })
+			.setTimestamp();
 
 		const button = new ButtonBuilder()
-		.setCustomId('fetchErrorUserInfo')
-		.setLabel(`📩 Fetch User Info`)
-		.setStyle(ButtonStyle.Danger)
+			.setCustomId("fetchErrorUserInfo")
+			.setLabel(`📩 Fetch User Info`)
+			.setStyle(ButtonStyle.Danger);
 
-		const row = new ActionRowBuilder()
-		.addComponents(button)
+		const row = new ActionRowBuilder().addComponents(button);
 
-		const msg = await sendChannel.send({ embeds: [embed], components: [row] }).catch(err => {});
+		const msg = await sendChannel
+			.send({ embeds: [embed], components: [row] })
+			.catch((err) => {});
 
 		var time = 300000;
 		const collector = await msg.createMessageComponentCollector({
 			componentType: ComponentType.Button,
-			time
+			time,
 		});
 
-		collector.on('collect', async i => {
-			if (i.customId == 'fetchErrorUserInfo') {
+		collector.on("collect", async (i) => {
+			if (i.customId == "fetchErrorUserInfo") {
 				const userEmbed = new EmbedBuilder()
-				.setColor("#ff00ff")
-				.setDescription("This user has triggered an error")
-				.addFields({ name: `Error Guild`, value: `\`${guild.name} (${guild.id})\``})
-				.addFields({ name: `Error User`, value: `\`${member.user.username} (${member.id})\``})
-				.addFields({ name: `Error Command Channel`, value: `\`${channel.name} (${channel.id})\``})
-				.setTimestamp()
+					.setColor("#ff00ff")
+					.setDescription("This user has triggered an error")
+					.addFields({
+						name: `Error Guild`,
+						value: `\`${guild.name} (${guild.id})\``,
+					})
+					.addFields({
+						name: `Error User`,
+						value: `\`${member.user.username} (${member.id})\``,
+					})
+					.addFields({
+						name: `Error Command Channel`,
+						value: `\`${channel.name} (${channel.id})\``,
+					})
+					.setTimestamp();
 
-				await i.reply({ embeds: [userEmbed], ephemeral: true })
+				await i.reply({ embeds: [userEmbed], ephemeral: true });
 			}
-		})
+		});
 
-		collector.on('end', async () => {
-			button.setDisabled(true)
-			embed.setFooter({ text: 'Error Logging System - your user button is now expired' })
-			await msg.edit({ embeds: [embed], components: [row] })
-		})
+		collector.on("end", async () => {
+			button.setDisabled(true);
+			embed.setFooter({
+				text: "Error Logging System - your user button is now expired",
+			});
+			await msg.edit({ embeds: [embed], components: [row] });
+		});
 	}
 });
 
@@ -382,7 +456,11 @@ client.on(Events.Error, (error) => {
 });
 client.on(Events.GuildCreate, (guild) => {
 	// This event triggers when the bot joins a guild.
-	console.log(chalk.blue(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`));
+	console.log(
+		chalk.blue(
+			`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`,
+		),
+	);
 });
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
 	if (!reaction.message.guildId) return;

@@ -16,7 +16,7 @@ module.exports = {
 
             for (let i = 0; i < cmds.length; i++) {
                 const ind = Math.floor(i / max),
-                    string = `\`${i + 1}.\` </${cmds[i].data.name + ":" + cmds[i].id}>\n> ${cmds[i].data.description}`;
+                    string = `\`${i + 1}.\` ${cmds[i].data.name + ": " + cmds[i].data.description}`;
 
                 pages[ind]
                     ? (pages[ind].data.description += `\n\n${string}`)
