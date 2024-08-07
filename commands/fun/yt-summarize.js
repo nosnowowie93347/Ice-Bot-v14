@@ -13,7 +13,7 @@ module.exports = {
     await interaction.deferReply({ ephemeral: true });
     const url = interaction.options.getString("url");
 
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto("https://summarize.tech/");
     await page.waitForSelector(

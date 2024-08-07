@@ -24,7 +24,7 @@ module.exports = {
 
 		query = query.replace(" ", "%");
 
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch();
 		const page = await browser.newPage();
 
 		var openURL = `https://old.discordjs.dev/#/docs/discord.js/14.11.0/search?query=${query}`;
