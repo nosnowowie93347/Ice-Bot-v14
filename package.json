@@ -44,7 +44,7 @@
     "pm2": "^5.4.2",
     "puppeteer": "^23.0.1",
     "rsnchat": "^4.0.1",
-    "superagent": "^9.0.2"
+    "superagent": "^10.1.0"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
