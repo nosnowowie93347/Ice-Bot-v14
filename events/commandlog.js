@@ -13,11 +13,17 @@ const {
 	GatewayIntentBits,
 	Collection,
 } = require("discord.js");
+const fs = require("fs").promises;
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction, client) {
-	var sendGuild = await interaction.client.guilds.fetch("830222901143535677")
-	var channel = await sendGuild.channels.fetch("986737674574508063");
+	const configFileContent = await fs.readFile(
+        `${process.cwd()}/config.json`,
+        "utf8"
+      );
+      const config = JSON.parse(configFileContent);
+	var sendGuild = await interaction.client.guilds.fetch(config.guildId)
+	var channel = await sendGuild.channels.fetch("1270850687257018459");
 
 	var server = interaction.guild.name;
 	var channelofuse = interaction.channel;
