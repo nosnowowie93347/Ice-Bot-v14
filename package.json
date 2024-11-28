@@ -33,7 +33,7 @@
     "got": "^11.8.5",
     "images-scraper": "^6.4.6",
     "imdb-api": "^4.4.1",
-    "libnpmsearch": "^7.0.6",
+    "libnpmsearch": "^8.0.0",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.45",
     "mongoose": "^8.2.0",
@@ -42,9 +42,9 @@
     "node-superfetch": "^0.3.4",
     "os-utils": "^0.0.14",
     "pm2": "^5.4.2",
-    "puppeteer": "^23.0.1",
+    "puppeteer": "^23.5.3",
     "rsnchat": "^4.0.1",
-    "superagent": "^9.0.2"
+    "superagent": "^10.1.0"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
