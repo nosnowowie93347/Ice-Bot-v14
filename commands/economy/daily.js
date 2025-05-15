@@ -10,7 +10,7 @@ module.exports = {
     .setDescription("Collect dailies"),
 
   async execute(interaction) {
-    try {
+    // try {
       await interaction.deferReply();
 
       const query = {
@@ -45,8 +45,8 @@ module.exports = {
       interaction.editReply(
         `${dailyAmount} was added to your balance. Your new balance is ${user.balance}`,
       );
-    } catch (error) {
-      console.log(`Error with /daily: ${error}`);
-    }
+    // } catch (error) {
+    //   console.log(`Error with /daily: ${error}`);
+    // }
   },
 };

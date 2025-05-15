@@ -20,6 +20,11 @@ module.exports = {
       };
 
       let user = await User.findOne(query);
+      if (!user) {
+        user = new User({
+          ...query
+        });
+      }
 
       user.balance += weeklyAmount;
       await user.save();

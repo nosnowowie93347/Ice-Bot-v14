@@ -124,14 +124,14 @@ client.once(Events.ClientReady, (c) => {
 		client.user.setActivity(status[random]);
 	}, 25000);
 });
-process.on("unhandledRejection", async (reason, promise) => {
-	console.log(
-		chalk.redBright("Error!: Unhandled Rejection at:"),
-		promise,
-		"reason:",
-		reason,
-	);
-});
+// process.on("unhandledRejection", async (reason, promise) => {
+// 	console.log(
+// 		chalk.redBright("Error!: Unhandled Rejection at:"),
+// 		promise,
+// 		"reason:",
+// 		reason,
+// 	);
+// });
 process.on("uncaughtException", (err) => {
 	console.log(chalk.redBright("Uncaught exception: "), err);
 });
