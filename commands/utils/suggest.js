@@ -15,9 +15,9 @@ module.exports = {
     async execute(interaction, client) {
 
         const user = interaction.member
-        const staffChannel = await interaction.guild.channels.cache.get('986737674574508063') // Staff Channel ID
-        const staffRoleID = '986737647248609320' // Staff Role ID
-        const suggestionChannel = await interaction.guild.channels.cache.get('1197378298737598474') // Suggestion Channel ID
+        const staffChannel = await interaction.guild.channels.cache.get('1374874192511762493') // Staff Channel ID
+        const staffRoleID = '1374874111892914280' // Staff Role ID
+        const suggestionChannel = await interaction.guild.channels.cache.get('1374874186199339058') // Suggestion Channel ID
         const suggestion = interaction.options.getString('suggestion') 
 
         const staffEmbed = new EmbedBuilder()
@@ -47,10 +47,10 @@ ${user.user.tag}
 
         const buttonRow = new ActionRowBuilder().addComponents(appStaffButton, decStaffButton)
 
-        await interaction.reply({ content: `Suggestion Sent To Staff Channel For Approval\nKeep You DMs On, You Will Get Notified` })
+        await interaction.reply({ content: `Suggestion Sent To Suggestion Channel For Approval\nKeep You DMs On, You Will Get Notified` })
         await wait(5000)
         await interaction.deleteReply()
-        const msg = await staffChannel.send({ embeds: [staffEmbed], components: [buttonRow] }) // Send Embed In Staff Channel
+        const msg = await suggestionChannel.send({ embeds: [staffEmbed], components: [buttonRow] }) // Send Embed In Staff Channel
 
         const collector = msg.createMessageComponentCollector({
             filter: (interaction) => {

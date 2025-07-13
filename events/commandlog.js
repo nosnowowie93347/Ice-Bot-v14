@@ -23,7 +23,7 @@ module.exports = {
       );
       const config = JSON.parse(configFileContent);
 	var sendGuild = await interaction.client.guilds.fetch(config.guildId)
-	var channel = await sendGuild.channels.fetch("1270850687257018459");
+	var channel = await sendGuild.channels.fetch("1374874199364993197");
 
 	var server = interaction.guild.name;
 	var channelofuse = interaction.channel;

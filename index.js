@@ -8,6 +8,7 @@ const {
 	ButtonBuilder,
 	PermissionFlagsBits,
 	EmbedBuilder,
+	MessageFlags,
 	AuditLogEvent,
 	ActionRowBuilder,
 	ButtonStyle,
@@ -232,7 +233,7 @@ client.on(Events.ChannelCreate, async (channel) => {
 			if (type == 5) type = "Category";
 			const logchannel = channel.guild.channels.cache.find(
 				(channel) =>
-					channel.name === "logs" || channel.name === "modlogs",
+					channel.name === "logs" || channel.name === "modlogs" || channel.name === "📛・moderation-logs",
 			);
 			let owner = await channel.guild.fetchOwner();
 			const embed = new EmbedBuilder()
@@ -283,9 +284,13 @@ client.on(Events.GuildBanAdd, (ban) => {
 	);
 
 	channel.send({ embeds: [embed] });
-	ban.user.send({
+	try {
+		ban.user.send({
 		content: `You have been banned from ${ban.guild} for ${ban.reason}.\nShould have behaved yourself, you silly goose!`,
 	});
+	} catch (error) {
+		console.log("Can't message banned user. Either a bot, or dms are closed.")
+	}
 });
 client.on(Events.InteractionCreate, async (interaction) => {
 	const blacklist = require("./models/blacklist");
@@ -354,7 +359,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			const expiredTimestamp = Math.round(expirationTime / 1000);
 			return interaction.reply({
 				content: `Please wait, you are on a cooldown for \`${command.data.name}\`. You can use it again <t:${expiredTimestamp}:R>.`,
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 	}
@@ -451,9 +456,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	}
 });
 
-client.on(Events.Error, (error) => {
-	console.error(chalk.redBright(`An error has occured: `), `${error}`);
-});
+
 client.on(Events.GuildCreate, (guild) => {
 	// This event triggers when the bot joins a guild.
 	console.log(

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, MessageFlags } = require("discord.js");
 
 module.exports = {
 	cooldown: 15,
@@ -171,7 +171,7 @@ module.exports = {
         if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)) {
             await interaction.reply({
                 content: "You do not have **Manage Messages** permission.",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
             return;
         }

@@ -60,7 +60,7 @@ module.exports = {
         const accMessage = interaction.options.getString("accept_msg");
         const decMessage = interaction.options.getString("decline_msg");
         const suggestionChannel = await interaction.guild.channels.cache.get(
-            "1197378298737598474",
+            "1374874186199339058",
         ); // Suggestion Channel ID
         const suggestionEmbed =
             await suggestionChannel.messages.fetch(messageID);
