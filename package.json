@@ -42,7 +42,7 @@
     "node-superfetch": "^0.3.5",
     "os-utils": "^0.0.14",
     "pm2": "^6.0.10",
-    "puppeteer": "^24.12.1",
+    "puppeteer": "^24.20.0",
     "rsnchat": "^4.0.1",
     "superagent": "^10.2.3"
   },
