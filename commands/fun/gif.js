@@ -21,7 +21,7 @@ module.exports = {
 		const lmt = 8;
 		let choice = Math.floor(Math.random() * lmt);
 		const link =
-			"https://tenor.googleapis.com/v2/search?q=" +
+			"https://api.giphy.com/v2/search?q=" +
 			query +
 			"&key=" +
 			key +
