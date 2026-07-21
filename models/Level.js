@@ -18,5 +18,6 @@ const levelSchema = new Schema({
     default: 0,
   },
 });
-
+// ⚡️ ADD THIS LINE: Creates a compound index for fast lookups
+levelSchema.index({ guildId: 1, userId: 1 }, { unique: true });
 module.exports = model("Level", levelSchema);

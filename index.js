@@ -28,20 +28,21 @@ const reactions = require("./models/reactionrs");
 const path = require("node:path");
 const axios = require("axios");
 const client = new Client({
-	intents:
-		[GatewayIntentBits.Guilds] |
-		[GatewayIntentBits.GuildInvites] |
-		[GatewayIntentBits.GuildBans] |
-		[GatewayIntentBits.GuildModeration] |
-		[GatewayIntentBits.GuildVoiceStates] |
-		[GatewayIntentBits.DirectMessages] |
-		[GatewayIntentBits.GuildMembers] |
-		[GatewayIntentBits.GuildEmojisAndStickers] |
-		[GatewayIntentBits.GuildPresences] |
-		[GatewayIntentBits.GuildMessageReactions] |
-		[GatewayIntentBits.MessageContent] |
-		[GatewayIntentBits.GuildMessages],
-	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
+	intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildInvites,
+        GatewayIntentBits.GuildBans,
+        GatewayIntentBits.GuildModeration,
+        GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildEmojisAndStickers,
+        GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMessages,
+    ],
+    partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 
 const eventsPath = path.join(__dirname, "events");
@@ -83,56 +84,39 @@ for (const folder of commandFolders) {
 		}
 	}
 }
+// Ready Event Setup
 client.once(Events.ClientReady, (c) => {
-	mongoose.set("strictQuery", false);
-	mongoose.connect(MONGODB_URI);
-	console.log(
-		cowsay.say({
-			text: "Connected to Database",
-			e: "oO",
-			T: "U ",
-		}),
-	);
-	let status = [
-		{
-			name: "Stuff and things",
-			type: ActivityType.Streaming,
-			url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-		},
-		{
-			name: "Stranger Things",
-			type: ActivityType.Watching,
-		},
-		{
-			name: "Fallout 4",
-			type: ActivityType.Playing,
-		},
-		{
-			name: "Spotify",
-			type: ActivityType.Listening,
-		},
-	];
-	console.log(
-		cowsay.say({
-			text: `Logged in as ${c.user.tag}`,
-			e: "oO",
-			T: "U ",
-		}),
-	);
+    mongoose.set("strictQuery", false);
+    mongoose.connect(MONGODB_URI)
+        .then(() => {
+            console.log(cowsay.say({ text: "Connected to Database", e: "oO", T: "U " }));
+        })
+        .catch(err => console.error("Database connection error:", err));
 
-	setInterval(() => {
-		let random = Math.floor(Math.random() * status.length);
-		client.user.setActivity(status[random]);
-	}, 25000);
+    console.log(cowsay.say({ text: `Logged in as ${c.user.tag}`, e: "oO", T: "U " }));
+
+    const statuses = [
+        { name: "Stuff and things", type: ActivityType.Streaming, url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" },
+        { name: "Stranger Things", type: ActivityType.Watching },
+        { name: "Fallout 4", type: ActivityType.Playing },
+        { name: "Spotify", type: ActivityType.Listening },
+    ];
+
+    setInterval(() => {
+        const random = Math.floor(Math.random() * statuses.length);
+        client.user.setActivity(statuses[random]);
+    }, 45000);
 });
-// process.on("unhandledRejection", async (reason, promise) => {
-// 	console.log(
-// 		chalk.redBright("Error!: Unhandled Rejection at:"),
-// 		promise,
-// 		"reason:",
-// 		reason,
-// 	);
-// });
+
+process.on("unhandledRejection", async (reason, promise) => {
+	console.log(
+		chalk.redBright("Uh oh... Problem:"),
+		promise,
+		"reason:",
+		reason,
+	);
+});
+// 
 process.on("uncaughtException", (err) => {
 	console.log(chalk.redBright("Uncaught exception: "), err);
 });
@@ -163,57 +147,46 @@ client.on(Events.MessageCreate, async (message) => {
 		}
 	}
 });
+
+// Utility helper to convert Channel Type Enum to string readable names
+function getChannelTypeName(type) {
+    switch (type) {
+        case ChannelType.GuildText: return "Text";
+        case ChannelType.GuildVoice: return "Voice";
+        case ChannelType.GuildStageVoice: return "Stage";
+        case ChannelType.GuildCategory: return "Category";
+        default: return "Other/Unknown";
+    }
+}
+// Channel Delete Log
 client.on(Events.ChannelDelete, async (channel) => {
-	channel.guild
-		.fetchAuditLogs({
-			type: AuditLogEvent.ChannelDelete,
-		})
-		.then(async (audit) => {
-			const { executor } = audit.entries.first();
+    if (!channel.guild) return;
 
-			const name = channel.name;
-			const id = channel.id;
-			let type = channel.type;
+    // FIX: Add .catch to handle lacking View Audit Log permissions safely
+    const audit = await channel.guild.fetchAuditLogs({ type: AuditLogEvent.ChannelDelete, limit: 1 }).catch(() => null);
+    const executor = audit?.entries.first()?.executor;
 
-			if (type == 0) type = "Text";
-			if (type == 2) type = "Voice";
-			if (type == 13) type = "Stage";
-			if (type == 5) type = "Category";
-			const logchannel = channel.guild.channels.cache.find(
-				(channel) =>
-					channel.name === "logs" || channel.name === "modlogs",
-			);
-			let owner = await channel.guild.fetchOwner();
-			const embed = new EmbedBuilder()
+    const logchannel = channel.guild.channels.cache.find(
+        (c) => c.name.includes("logs")
+    );
+    if (!logchannel) return;
 
-				.setAuthor({ name: `${owner.user.username}` })
-				.setColor("#dc143c")
-				.setTitle(`🛠 Channel Deleted!`)
-				.setTimestamp()
-				.addFields({
-					name: "Channel Name",
-					value: `\`${name}\``,
-					inline: false,
-				})
-				.addFields({
-					name: "Channel Type",
-					value: `\`${type}\``,
-					inline: false,
-				})
-				.addFields({
-					name: "Channel ID",
-					value: `\`${id}\``,
-					inline: false,
-				})
-				.addFields({
-					name: "Deleted By",
-					value: `\`${executor.tag}\``,
-					inline: false,
-				})
-				.setFooter({ text: `⚙ Mod Logging System` });
+    const owner = await channel.guild.fetchOwner().catch(() => null);
+    
+    const embed = new EmbedBuilder()
+        .setAuthor({ name: owner ? owner.user.username : "Unknown Owner" })
+        .setColor("#dc143c")
+        .setTitle(`🛠 Channel Deleted!`)
+        .setTimestamp()
+        .addFields(
+            { name: "Channel Name", value: `\`${channel.name}\`` },
+            { name: "Channel Type", value: `\`${getChannelTypeName(channel.type)}\`` },
+            { name: "Channel ID", value: `\`${channel.id}\`` },
+            { name: "Deleted By", value: executor ? `\`${executor.tag}\`` : "`Unknown`" }
+        )
+        .setFooter({ text: `⚙ Mod Logging System` });
 
-			logchannel.send({ embeds: [embed] });
-		});
+    logchannel.send({ embeds: [embed] }).catch(() => {});
 });
 client.on(Events.ChannelCreate, async (channel) => {
 	channel.guild
@@ -465,64 +438,75 @@ client.on(Events.GuildCreate, (guild) => {
 		),
 	);
 });
+
+// Helper for dynamic parsing of structural full reaction objects
+async function handleReactionRole(reaction, user, assignMode) {
+    // FIX: Partial checks inside message reaction updates
+    if (reaction.partial) {
+        try {
+            await reaction.fetch();
+        } catch (error) {
+            console.error("Something went wrong when fetching the reaction message details:", error);
+            return;
+        }
+    }
+
+    if (!reaction.message.guildId || user.bot) return;
+
+    let cID = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
+
+    const data = await reactions.findOne({
+        Guild: reaction.message.guildId,
+        Message: reaction.message.id,
+        Emoji: cID,
+    });
+    if (!data) return;
+
+    const guild = client.guilds.cache.get(reaction.message.guildId);
+    if (!guild) return;
+    
+    const member = await guild.members.fetch(user.id).catch(() => null);
+    if (!member) return;
+
+    try {
+        if (assignMode) {
+            await member.roles.add(data.Role);
+        } else {
+            await member.roles.remove(data.Role);
+        }
+    } catch (e) {
+        console.error(`Failed to modify reaction roles for user ${user.tag}: ${e.message}`);
+    }
+}
+
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
-	if (!reaction.message.guildId) return;
-	if (user.bot) return;
-
-	let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
-	if (!reaction.emoji.id) cID = reaction.emoji.name;
-
-	const data = await reactions.findOne({
-		Guild: reaction.message.guildId,
-		Message: reaction.message.id,
-		Emoji: cID,
-	});
-	if (!data) return;
-
-	const guild = await client.guilds.cache.get(reaction.message.guildId);
-	const member = await guild.members.cache.get(user.id);
-
-	try {
-		await member.roles.add(data.Role);
-	} catch (e) {
-		console.log(`ERROR: ${e}`);
-		return;
-	}
+    await handleReactionRole(reaction, user, true);
 });
+
 client.on(Events.MessageReactionRemove, async (reaction, user) => {
-	if (!reaction.message.guildId) return;
-	if (user.bot) return;
-
-	let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
-	if (!reaction.emoji.id) cID = reaction.emoji.name;
-
-	const data = await reactions.findOne({
-		Guild: reaction.message.guildId,
-		Message: reaction.message.id,
-		Emoji: cID,
-	});
-	if (!data) return;
-
-	const guild = await client.guilds.cache.get(reaction.message.guildId);
-	const member = await guild.members.cache.get(user.id);
-
-	try {
-		await member.roles.remove(data.Role);
-	} catch (e) {
-		console.log(`ERROR: ${e}`);
-		return;
-	}
+    await handleReactionRole(reaction, user, false);
 });
+
+
+// Ghost Ping Identification Context
 client.on(Events.MessageUpdate, async (oldMessage, newMessage) => {
-	if (oldMessage.mentions.users.first()) {
-		const embed = new EmbedBuilder()
-			.setTitle("Ghost Ping")
-			.setDescription(
-				`${
-					oldMessage.author.tag
-				} ghost pinged ${oldMessage.mentions.users.first()}`,
-			);
-		return oldMessage.channel.send(embed);
-	}
+    if (oldMessage.partial) return; // Ignore if old message text isn't cached
+    if (oldMessage.author?.bot) return;
+
+    if (oldMessage.mentions.users.first()) {
+        // Simple verification that mention count actually dropped
+        const oldMentionCount = oldMessage.mentions.users.size;
+        const newMentionCount = newMessage.mentions.users.size;
+
+        if (newMentionCount < oldMentionCount) {
+            const embed = new EmbedBuilder()
+                .setTitle("👻 Ghost Ping Detected")
+                .setColor("#ffcc00")
+                .setDescription(`${oldMessage.author} ghost pinged ${oldMessage.mentions.users.first()}`)
+                .setTimestamp();
+            
+            return oldMessage.channel.send({ embeds: [embed] }).catch(() => {});
+        }
+    }
 });
 client.login(token);
