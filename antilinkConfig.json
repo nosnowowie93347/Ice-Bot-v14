@@ -1,5 +1,12 @@
 {
-    "blacklistedLinks": ["https://www.pornhub.com"],
-    "blacklistedTerms": ["porn", "kys", "slut"],
-    "whitelistedRoles": []
+  "blacklistedLinks": [
+    "https://www.pornhub.com",
+    "pornhub.com"
+  ],
+  "blacklistedTerms": [
+    "porn",
+    "kys",
+    "slut"
+  ],
+  "whitelistedRoles": []
 }
